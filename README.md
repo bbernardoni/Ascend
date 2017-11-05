@@ -9,7 +9,7 @@ Credits:
 
 Game Programmers:
   Josh Burke, 
-  Peter Chen, 
+  Peter (Zehua) Chen, 
   Andre Garner, 
   Diana Huang
   
