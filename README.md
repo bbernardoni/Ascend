@@ -7,20 +7,20 @@ Descend is an action puzzle 2D platformer created on the Unity game engine.
 
 Credits:
 
-Game Programmers
-  Josh Burke
-  Peter Chen
-  Andre Garner
+Game Programmers:
+  Josh Burke, 
+  Peter Chen, 
+  Andre Garner, 
   Diana Huang
   
-Artist
+Artist:
   Sarah Elizabeth Anderson
   
-Game Designer
+Game Designer:
   Anirudh Sivaraman
 
-Audio Creator
+Audio Creator:
   Will Bauer
   
-Game Manager
+Game Manager:
   Diana Huang
