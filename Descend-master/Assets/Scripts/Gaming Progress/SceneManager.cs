@@ -40,7 +40,7 @@ public class SceneManager : MonoBehaviour
         checkPointsManager = (CheckPointDataBase)sceneFolder.DeserializeDataBase<CheckPointDataBase>(CheckPointFileNameOnDisk);
         checkPointsManager.SetCheckPoints(CheckPoints);
         enemiesManager = (EnemyDataBase)sceneFolder.DeserializeDataBase<EnemyDataBase>(EnemyFileNameOnDisk);
-        playerManager = (PlayerDataBase)sceneFolder.DeserializeDataBase<PlayerDataBase>(PlayerFileNameOnDisk);
+        playerManager = (PlayerDataBase)sceneFolder.DeserializeDataBase<PlayerDataBase>(PlayerFileNameOnDisk, 2);
 
     }
 	void Start()
