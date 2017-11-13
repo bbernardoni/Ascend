@@ -134,4 +134,14 @@ public class SceneManager : MonoBehaviour
             return checkPoint.transform.position; 
         }
     }
+
+    /// <summary>
+    /// Deletes the files of this scene.
+    /// </summary>
+    public void DeleteFilesOfThisScene()
+    {
+        sceneFolder.DeleteAllContent();
+        Debug.Log("Files Cleared");
+    }
+
 }

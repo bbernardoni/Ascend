@@ -259,6 +259,28 @@ public class GameFolder
         temp.Initialize(constructorParameters);
         return temp;
     }
+
+    /// <summary>
+    /// Deletes the all the content of this folder.
+    /// </summary>
+    public void DeleteAllContent()
+    {
+        DirectoryInfo info = new DirectoryInfo(this.Location);
+
+        //Delete all the files in this folder
+        foreach (var file in info.GetFiles()) 
+        {
+            file.Delete();
+        }
+
+        //Delete all the files in the sub folders of this folders, and the sub folders 
+        //themselves.
+        foreach (var subDirectories in info.GetDirectories())
+        {
+            subDirectories.Delete(true);
+        }
+
+    }
 }
 
 /// <summary>

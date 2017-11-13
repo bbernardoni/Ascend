@@ -65,6 +65,15 @@ public struct SerializableVector3
         return string.Format("[SerializableVector3: X={0}, Y={1}, Z={2}]", X, Y, Z);
     }
 
+    /// <summary>
+    /// Tos the vector3.
+    /// </summary>
+    /// <returns>The vector3.</returns>
+    public Vector3 ToVector3() 
+    {
+        return new Vector3(this.X, this.Y, this.Z);
+    }
+
 }
 
 [Serializable]
@@ -328,4 +337,11 @@ public class EnvironmentItem
     public bool ActionPerformed { get; set; }
     public SerializableVector3 Position { get; set; }
     public SerializableVector3 Rotation { get; set; }
+}
+
+public class EnvironmentDataBase : GameDataBase 
+{
+    public EnvironmentItem[] items;
+
+
 }
