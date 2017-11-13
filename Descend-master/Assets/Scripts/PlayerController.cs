@@ -44,6 +44,11 @@ public class PlayerController : MonoBehaviour {
         {
             Other.GetComponent<Interactable>().function(gameObject);
         }
+        if(Other.gameObject.CompareTag("Enemy") && Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("STUN!");
+            Other.GetComponent<EnemyController>().stun();
+        }
     }
 
     void FixedUpdate()
