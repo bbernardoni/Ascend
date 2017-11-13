@@ -6,18 +6,15 @@ using UnityEngine.UI;
 public class EnemyController : MonoBehaviour {
 
     public bool facingRight = true;
-//<<<<<<< HEAD
-    //public float moveForce = 10f;
-    //public float maxSpeed = 5f;
-    //public float health = 100;
-//=======
     public float moveForce = 600f;
     public float maxSpeed = 5f;
     public float health = 100;
     public float sightDistance = 100f;
+    public float stunDuration = 3f;
     public GameObject eye;
     public GameObject player;
-//>>>>>>> refs/remotes/origin/Josh
+    public GameObject stunAnimation;
+    public bool stunned = false;
 
     public Rigidbody2D rb2d;
     public Slider healthSlider;
@@ -26,11 +23,10 @@ public class EnemyController : MonoBehaviour {
     private float leftRight = 0;
     private float lastMove = 0;
 
+    private float stunTime = 0;
+
     private bool idleMoving = false;
-//<<<<<<< HEAD
-//=======
     public bool alerted = false;
-//>>>>>>> refs/remotes/origin/Josh
 
     // Use this for initialization
     void Start () {
@@ -38,51 +34,35 @@ public class EnemyController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//<<<<<<< HEAD
-        if (!idleMoving)
-//=======
-        if (!idleMoving && !alerted)
-//>>>>>>> refs/remotes/origin/Josh
+        stunCheck();
+        if (!stunned)
         {
-            StartCoroutine(idleMove());
-            idleMoving = true;
+            playerCheck();
+            healthSlider.value = health;
+            if (!idleMoving && !alerted)
+            {
+                StartCoroutine(idleMove());
+                idleMoving = true;
+            }
+            if(rb2d.velocity.x > 0)
+            {
+                facingRight = true;
+                transform.localScale = new Vector3(1, 1, 1);
+            } else if(rb2d.velocity.x < 0)
+            {
+                facingRight = false;
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
         }
-//<<<<<<< HEAD
-        healthSlider.value = health;
+        else
+        {
+            rb2d.velocity = Vector2.zero;
+        }
 	}
-
-    /* IEnumerator idleMove()
-    {
-        lastMove = Time.time;
-        moveTime = Random.Range(1, 3);
-        float direction = Random.Range(-1, 1);
-        while((Time.time - lastMove) < moveTime)
-        {
-            rb2d.AddForce(Vector2.right * direction * moveForce);
-            yield return new WaitForSeconds(0.1f);
-        }
-        yield return new WaitForSeconds(3);
-//=======
-
-        playerCheck();
-        healthSlider.value = health;
-
-        if(rb2d.velocity.x > 0)
-        {
-            facingRight = true;
-            transform.localScale = new Vector3(1, 1, 1);
-        }
-        
-        if(rb2d.velocity.x < 0)
-        {
-            facingRight = false;
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-	} */
 
     void FixedUpdate()
     {
-        if (alerted)
+        if (alerted && !stunned)
         {
             Chase(player);
         }
@@ -127,6 +107,8 @@ public class EnemyController : MonoBehaviour {
         float direction = 0;
         if(Mathf.Abs(toPlayer.x) < 0.1)
         {
+            return;
+        } else if(Mathf.Abs(toPlayer.x) > sightDistance){
             alerted = false;
             return;
         }
@@ -138,7 +120,7 @@ public class EnemyController : MonoBehaviour {
         {
             direction = 1;
         }
-        rb2d.AddForce(new Vector3(direction, 0, 0) * moveForce * 0.1f);
+        rb2d.velocity = (new Vector2(direction, rb2d.velocity.y) * moveForce / 200);
         Debug.Log("Chasing... Force = " + (direction*moveForce*0.1f));
     }
 
@@ -155,12 +137,10 @@ public class EnemyController : MonoBehaviour {
         Debug.Log(direction);
         while((Time.time - lastMove) < moveTime)
         {
-            rb2d.AddForce(new Vector3(direction, 0, 0) * (moveForce / Random.Range(1,3)));
+            rb2d.velocity = (new Vector2(direction, rb2d.velocity.y) * (moveForce / Random.Range(100,300)));
             yield return new WaitForSeconds(0.1f);
         }
         yield return new WaitForSeconds(1);
-//>>>>>>> refs/remotes/origin/Josh
-
         idleMoving = false;
     }
 
@@ -196,6 +176,28 @@ public class EnemyController : MonoBehaviour {
 
         moveTime -= Time.time - lastMove;
         lastMove = Time.time;
+    }
+
+    public void stun()
+    {
+        stunTime = Time.time;
+        stunned = true;
+    }
+
+    void stunCheck()
+    {
+        if (stunned && stunTime + stunDuration < Time.time)
+        {
+            stunned = false;
+        }
+        if (stunned)
+        {
+            stunAnimation.SetActive(true);
+        }
+        else
+        {
+            stunAnimation.SetActive(false);
+        }
     }
 
     void die()
