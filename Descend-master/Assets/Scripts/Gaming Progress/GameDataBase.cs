@@ -77,6 +77,28 @@ public struct SerializableVector3
 }
 
 [Serializable]
+public struct SerializableQuaternion 
+{
+    public float X { get; set; }
+    public float Y { get; set; }
+    public float Z { get; set; }
+    public float W { get; set; }
+
+    public SerializableQuaternion(Quaternion quaternion)
+    {
+        X = quaternion.x;
+        Y = quaternion.y;
+        Z = quaternion.z;
+        W = quaternion.w;
+    }
+
+    public Quaternion ToQuaternion() 
+    {
+        return new Quaternion(X, Y, Z, W);
+    }
+}
+
+[Serializable]
 public class GameDataBase
 {
     /// <summary>
@@ -336,12 +358,37 @@ public class EnvironmentItem
     public string Name { get; set; }
     public bool ActionPerformed { get; set; }
     public SerializableVector3 Position { get; set; }
-    public SerializableVector3 Rotation { get; set; }
+    public SerializableQuaternion Rotation { get; set; }
 }
 
+[Serializable]
+public class Elevator : EnvironmentItem
+{
+    public SerializableVector3 StartPosition
+    {
+        get
+        {
+            return Position;
+        }
+        set
+        {
+            Position = value;
+        }
+    }
+
+    public SerializableVector3 EndPosition { get; set; }
+}
+
+[Serializable]
 public class EnvironmentDataBase : GameDataBase 
 {
-    public EnvironmentItem[] items;
+    public List<EnvironmentItem> Items;
+    //public List<Elevator> Elevators;
 
+    public EnvironmentDataBase() 
+    {
+        Items = new List<EnvironmentItem>();
+        //Elevators = new List<Elevator>();
+    }
 
 }
