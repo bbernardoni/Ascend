@@ -86,6 +86,9 @@ public class SceneManager : MonoBehaviour
         Save();
     }
 
+    ///<summary>
+    ///Save current scene
+    ///</summary>
     public void Save() 
     {
         sceneFolder.SerializeDataBase(checkPointsManager, CheckPointFileNameOnDisk);

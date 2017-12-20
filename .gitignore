@@ -5,7 +5,14 @@
 [Bb]uilds/
 Assets/AssetStoreTools*
 
+#Save and Load
 [Gg]ame Data/
+
+#VS Code Configuration
+.vscode/
+
+#Unity Versions
+/Descend-master/ProjectSettings/ProjectVersion.txt
 
 # Visual Studio 2015 cache directory
 /.vs/
