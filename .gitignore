@@ -8,6 +8,9 @@ Assets/AssetStoreTools*
 #Save and Load
 [Gg]ame Data/
 
+# macOS specific 
+.DS_Store
+
 #VS Code Configuration
 .vscode/
 
