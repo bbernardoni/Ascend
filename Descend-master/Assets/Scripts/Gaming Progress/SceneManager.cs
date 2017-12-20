@@ -17,16 +17,20 @@ public class SceneManager : MonoBehaviour
     private CheckPointDataBase checkPointsManager;
     private EnemyDataBase enemiesManager;
     private PlayerDataBase playerManager;
+    private EnvironmentDataBase environmentManager;
     private GameBundle mainBundle;
     private GameFolder sceneFolder;
+    private GameFolder playerFolder;
 
     public string SceneNameOnDisk;
     public string CheckPointFileNameOnDisk;
     public string EnemyFileNameOnDisk;
     public string PlayerFileNameOnDisk;
+    public string EnvironmentFileOnDisk;
 
     public GameObject Player;
     public GameObject[] CheckPoints;
+
 
 	// Use this for initialization
     void Awake() 
@@ -36,11 +40,13 @@ public class SceneManager : MonoBehaviour
         //Create folder for the scene on disk
         mainBundle = GameBundle.MainBundle;
         sceneFolder = mainBundle.OpenSpecificSceneFolder(SceneNameOnDisk);
+        playerFolder = mainBundle.PlayerFolder;
 
         checkPointsManager = (CheckPointDataBase)sceneFolder.DeserializeDataBase<CheckPointDataBase>(CheckPointFileNameOnDisk);
         checkPointsManager.SetCheckPoints(CheckPoints);
         enemiesManager = (EnemyDataBase)sceneFolder.DeserializeDataBase<EnemyDataBase>(EnemyFileNameOnDisk);
-        playerManager = (PlayerDataBase)sceneFolder.DeserializeDataBase<PlayerDataBase>(PlayerFileNameOnDisk, 2);
+        playerManager = (PlayerDataBase)playerFolder.DeserializeDataBase<PlayerDataBase>(PlayerFileNameOnDisk, 2); //2 is the inventory size
+        environmentManager = (EnvironmentDataBase)sceneFolder.DeserializeDataBase<EnvironmentDataBase>(EnvironmentFileOnDisk);
 
     }
 	void Start()
@@ -51,6 +57,14 @@ public class SceneManager : MonoBehaviour
             GameObject.Find(enemy).SetActive(false);
         }
 
+        foreach (EnvironmentItem item in environmentManager.Items) 
+        {
+            GameObject obj = GameObject.Find(item.Name);
+            obj.transform.position = item.Position.ToVector3();
+            obj.transform.rotation = item.Rotation.ToQuaternion();
+
+        }
+
         //checkPointsManager.UpdateCheckPoint(1);
         //Reposition();
 
@@ -58,7 +72,7 @@ public class SceneManager : MonoBehaviour
     void Reposition()
     {
         Player.transform.position = this.LatestCheckPoint;
-        Debug.Log(this.LatestCheckPoint.ToString());
+        //Debug.Log(this.LatestCheckPoint.ToString());
     }
 
 	// Update is called once per frame
@@ -69,9 +83,15 @@ public class SceneManager : MonoBehaviour
 
     void OnDestroy() 
     {
+        Save();
+    }
+
+    public void Save() 
+    {
         sceneFolder.SerializeDataBase(checkPointsManager, CheckPointFileNameOnDisk);
         sceneFolder.SerializeDataBase(enemiesManager, EnemyFileNameOnDisk);
-        sceneFolder.SerializeDataBase(playerManager, PlayerFileNameOnDisk);
+        playerFolder.SerializeDataBase(playerManager, PlayerFileNameOnDisk);
+        sceneFolder.SerializeDataBase(environmentManager, EnvironmentFileOnDisk);
     }
 
     /// <summary>
@@ -108,16 +128,19 @@ public class SceneManager : MonoBehaviour
     public void UpdateCheckPoint(int checkPoint)
     {
         checkPointsManager.UpdateCheckPoint(checkPoint);
+        Save();
     }
 
     public void UpdateCheckPoint(GameObject checkPoint)
     {
         checkPointsManager.UpdateCheckPoint(checkPoint.name);
+        Save();
     }
 
     public void UpdateCheckPoint(MonoBehaviour checkPoint)
     {
         checkPointsManager.UpdateCheckPoint(checkPoint.gameObject.name);
+        Save();
     }
 
     /// <summary>
