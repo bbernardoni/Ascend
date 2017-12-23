@@ -3,101 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Serializable vector3, used for serialization of the position of Unity postions,
-/// which cannot be serialied
-/// </summary>
-[Serializable]
-public struct SerializableVector3
-{
-    /// <summary>
-    /// Gets or sets the x.
-    /// </summary>
-    /// <value>The x.</value>
-    public float X { get; set; }
-
-    /// <summary>
-    /// Gets or sets the y.
-    /// </summary>
-    /// <value>The y.</value>
-    public float Y { get; set; }
-
-    /// <summary>
-    /// Gets or sets the z.
-    /// </summary>
-    /// <value>The z.</value>
-    public float Z { get; set; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="T:SerializableVector3"/> struct.
-    /// </summary>
-    /// <param name="x">The x coordinate.</param>
-    /// <param name="y">The y coordinate.</param>
-    /// <param name="z">The z coordinate.</param>
-    public SerializableVector3(float x, float y, float z)
-    {
-        this.X = x;
-        this.Y = y;
-        this.Z = z;
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="T:SerializableVector3"/> struct.
-    /// </summary>
-    /// <param name="x">The x coordinate.</param>
-    /// <param name="y">The y coordinate.</param>
-    public SerializableVector3(float x, float y) : this(x, y, 0)
-    {
-        
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="T:SerializableVector3"/> struct.
-    /// </summary>
-    /// <param name="unityVector3">Unity vector3.</param>
-    public SerializableVector3(Vector3 unityVector3) : this(unityVector3.x, unityVector3.y, unityVector3.z)
-    {
-        
-    }
-
-    public override string ToString()
-    {
-        return string.Format("[SerializableVector3: X={0}, Y={1}, Z={2}]", X, Y, Z);
-    }
-
-    /// <summary>
-    /// Tos the vector3.
-    /// </summary>
-    /// <returns>The vector3.</returns>
-    public Vector3 ToVector3() 
-    {
-        return new Vector3(this.X, this.Y, this.Z);
-    }
-
-}
-
-[Serializable]
-public struct SerializableQuaternion 
-{
-    public float X { get; set; }
-    public float Y { get; set; }
-    public float Z { get; set; }
-    public float W { get; set; }
-
-    public SerializableQuaternion(Quaternion quaternion)
-    {
-        X = quaternion.x;
-        Y = quaternion.y;
-        Z = quaternion.z;
-        W = quaternion.w;
-    }
-
-    public Quaternion ToQuaternion() 
-    {
-        return new Quaternion(X, Y, Z, W);
-    }
-}
-
 [Serializable]
 public class GameDataBase
 {
@@ -112,6 +17,11 @@ public class GameDataBase
     public virtual void Initialize(params object[] parameters)
     {
         
+    }
+
+    public virtual void InitializeForTheFirstTime(params object[] parameters)
+    {
+
     }
 }
 
@@ -152,6 +62,16 @@ public class CheckPointDataBase : GameDataBase
         get
         {
             return checkPointNames[latestCheckPointIndex];
+        }
+    }
+
+    public bool IsEmpty
+    {
+        get 
+        {
+            if (checkPointNames.Length == 0)
+                return true;
+            return false;
         }
     }
 
@@ -345,6 +265,7 @@ public class PlayerDataBase : GameDataBase
     public override void Initialize(params object[] parameters)
     {
         base.Initialize(parameters);
+
         int size = (int)parameters[0];
         inventory = new object[size];
     }
@@ -356,39 +277,73 @@ public class PlayerDataBase : GameDataBase
 public class EnvironmentItem
 {
     public string Name { get; set; }
-    public bool ActionPerformed { get; set; }
+    
     public SerializableVector3 Position { get; set; }
     public SerializableQuaternion Rotation { get; set; }
+
+    public EnvironmentItem(string name, Vector3 position, Quaternion rotation)
+    {
+        this.Name = name;
+        this.Position = new SerializableVector3(position);
+        this.Rotation = new SerializableQuaternion(rotation);
+    }
+
+    public EnvironmentItem()
+    {
+        this.Name = "";
+        this.Position = new SerializableVector3(0.0f, 0.0f, 0.0f);
+        this.Rotation = new SerializableQuaternion(0.0f, 0.0f, 0.0f, 0.0f);
+    }
 }
 
 [Serializable]
-public class Elevator : EnvironmentItem
+public class EnvironmentDataBase : GameDataBase
 {
-    public SerializableVector3 StartPosition
+    private List<EnvironmentItem> _items;
+
+    ///<summary>
+    ///Environment items stored
+    ///</summary>
+    public List<EnvironmentItem> Items 
     {
-        get
+        get 
         {
-            return Position;
-        }
-        set
-        {
-            Position = value;
+            return _items;
         }
     }
 
-    public SerializableVector3 EndPosition { get; set; }
-}
+    public void UpdateItem(GameObject item)
+    {
+        foreach (var i in Items)
+        {
+            if (i.Name == item.name)
+            {
+                Debug.Log(item.transform.position);
+                i.Position = new SerializableVector3(item.transform.position);
+                i.Rotation = new SerializableQuaternion(item.transform.rotation);
+                return;
+            }
+        }
 
-[Serializable]
-public class EnvironmentDataBase : GameDataBase 
-{
-    public List<EnvironmentItem> Items;
-    //public List<Elevator> Elevators;
+        EnvironmentItem seriralizableItem = new EnvironmentItem(item.name, 
+        item.transform.position, item.transform.rotation);
+
+        Items.Add(seriralizableItem);
+    }
 
     public EnvironmentDataBase() 
     {
-        Items = new List<EnvironmentItem>();
-        //Elevators = new List<Elevator>();
+        _items = new List<EnvironmentItem>();
     }
 
+    /*
+    public override void Initialize(params object[] parameters)
+    {
+        GameObject[] _elevators = (GameObject[])parameters;
+        foreach (var _elevator in _elevators)
+        {
+            _triggerItems.Add(new EnvrionmentTriggerItem(_elevator.name, _elevator.transform.position, _elevator.transform.rotation));
+        }
+    }
+    */
 }
