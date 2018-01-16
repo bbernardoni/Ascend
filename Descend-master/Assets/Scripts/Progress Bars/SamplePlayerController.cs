@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SamplePlayerController : MonoBehaviour, IPlayerWithBars {
+public class SamplePlayerController : MonoBehaviour, IPlayerControllerWithBars {
 
 	public event BarValueChangedEventHandler HealthChanged;
 	public event BarValueChangedEventHandler FuelChanged;

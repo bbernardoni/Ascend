@@ -4,7 +4,7 @@ using UnityEngine;
 
 public delegate void BarValueChangedEventHandler(float newValue);
 
-public interface IPlayerWithBars
+public interface IPlayerControllerWithBars
 {
 	event BarValueChangedEventHandler HealthChanged;
 	event BarValueChangedEventHandler FuelChanged;
@@ -16,7 +16,7 @@ public class PlayerBarsController : MonoBehaviour {
 	[Tooltip("Leave it blank if the player controller is \"PlayerController\"")]
 	public MonoBehaviour debugPlayerController;
 
-	private IPlayerWithBars player;
+	private IPlayerControllerWithBars player;
 
 	private HealthBarController healthBarController = null;
 	private FuelBarController fuelBarController = null;
@@ -29,9 +29,9 @@ public class PlayerBarsController : MonoBehaviour {
 
 		if (debugPlayerController != null)
 		{
-			if (debugPlayerController is IPlayerWithBars)
+			if (debugPlayerController is IPlayerControllerWithBars)
 			{
-				player = debugPlayerController as IPlayerWithBars;
+				player = debugPlayerController as IPlayerControllerWithBars;
 				player.HealthChanged += HealthChanged;
 				player.FuelChanged += FuelChanged;
 			}
@@ -44,9 +44,9 @@ public class PlayerBarsController : MonoBehaviour {
 		}
 		PlayerController controller = GetComponent<PlayerController>();
 		
-		if (controller is IPlayerWithBars) 
+		if (controller is IPlayerControllerWithBars) 
 		{
-			player = (IPlayerWithBars)controller;
+			player = (IPlayerControllerWithBars)controller;
 			player.FuelChanged += FuelChanged;
 			player.HealthChanged += FuelChanged;
 		}
