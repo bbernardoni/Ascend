@@ -4,9 +4,18 @@ using UnityEngine;
 
 public delegate void BarValueChangedEventHandler(float newValue);
 
+///<summary>
+/// Make the Player Controller conform to this protocol for the health and fuel bars to work;
+///</summary>
 public interface IPlayerControllerWithBars
 {
+	///<summary>
+	/// Fire this event when new health value is available;
+	///</summary>
 	event BarValueChangedEventHandler HealthChanged;
+	///<summary>
+	/// Fire this event when new fuel value is available;
+	///</summary>
 	event BarValueChangedEventHandler FuelChanged;
 }
 
