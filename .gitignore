@@ -10,9 +10,6 @@ Assets/AssetStoreTools*
 # macOS specific 
 .DS_Store
 
-#VS Code Configuration
-.vscode/
-
 #Unity Versions
 /Descend-master/ProjectSettings/ProjectVersion.txt
 
