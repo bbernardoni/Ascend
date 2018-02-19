@@ -235,7 +235,8 @@ public class GameFolder
     public GameDataBase DeserializeDataBase<T>(string fileName)
     {
         GameDataBase tempDataBase;
-        if (this.DoesXmlFileExist(fileName)) {
+        if (this.DoesXmlFileExist(fileName)) 
+        {
             fileName += ".xml";
             string filePathOnDisk = Path.Combine(this.Location, fileName);
             XmlSerializer xs = new XmlSerializer(typeof(T));
@@ -248,16 +249,40 @@ public class GameFolder
         else 
         {
             tempDataBase = (GameDataBase)Activator.CreateInstance(typeof(T));
+            
         }
 
         return tempDataBase;
     }
+
 
     public GameDataBase DeserializeDataBase<T>(string fileName, params object[] constructorParameters)
     {
         GameDataBase temp = DeserializeDataBase<T>(fileName);
         temp.Initialize(constructorParameters);
         return temp;
+    }
+
+    /// <summary>
+    /// Deletes the all the content of this folder.
+    /// </summary>
+    public void DeleteAllContent()
+    {
+        DirectoryInfo info = new DirectoryInfo(this.Location);
+
+        //Delete all the files in this folder
+        foreach (var file in info.GetFiles()) 
+        {
+            file.Delete();
+        }
+
+        //Delete all the files in the sub folders of this folders, and the sub folders 
+        //themselves.
+        foreach (var subDirectories in info.GetDirectories())
+        {
+            subDirectories.Delete(true);
+        }
+
     }
 }
 
@@ -359,31 +384,3 @@ public class GameBundle : GameFolder
 
 }
 
-public static class GameBundleFolderExtensionFunction 
-{
-    /// <summary>
-    /// Saves to folder.
-    /// </summary>
-    /// <param name="xmldoc">Xmldoc.</param>
-    /// <param name="folder">Folder.</param>
-    public static void SaveToFolder(this XmlDocument xmlDoc, GameFolder folder, string name)
-    {
-        if (!name.Contains(".xml"))
-        {
-            name += ".xml";
-        }
-        string filePathOnDisk = Path.Combine(folder.Location, name);
-
-        xmlDoc.Save(filePathOnDisk);
-    }
-
-    /// <summary>
-    /// Save to UserData folder of a Game Bundle
-    /// </summary>
-    /// <param name="xmlDoc">Xml document.</param>
-    /// <param name="bundle">Bundle.</param>
-    public static void SaveToBundle(this XmlDocument xmlDoc, GameBundle bundle, string name)
-    {
-        SaveToFolder(xmlDoc, bundle, name);
-    }
-}
