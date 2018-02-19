@@ -54,8 +54,8 @@ public class SceneManager : MonoBehaviour
     }
     void Start()
     {
-        
-        
+
+
         //checkPointsManager.UpdateCheckPoint(1);
         //Reposition();
 
@@ -98,7 +98,7 @@ public class SceneManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!haveInitializedScene) 
+        if (!haveInitializedScene)
         {
             RepositionPlayer();
             RepositionEnvironmentItems();
@@ -112,6 +112,10 @@ public class SceneManager : MonoBehaviour
         Save();
     }
 
+    ///<summary>
+    /// Save current game to the disk.
+    /// This method is automatically called in OnDestroy()
+    ///</summary>
     public void Save()
     {
         sceneFolder.SerializeDataBase(checkPointsManager, CheckPointFileNameOnDisk);
@@ -123,7 +127,7 @@ public class SceneManager : MonoBehaviour
     /// <summary>
     /// Registers an enemy to be dead
     /// </summary>
-    /// <param name="enemy">Enemy.</param>
+    /// <param name="enemy">The dead enemy</param>
     public void RegisterDeadEnemy(string enemy)
     {
         enemiesManager.AddDeadEnemy(enemy);
@@ -192,10 +196,21 @@ public class SceneManager : MonoBehaviour
         }
     }
 
+    ///<summary>
+    /// Update the location of an environment item, if it has been recorded before.
+    /// If the item has not been recorded, a new one one will be inserted into the xml file.
+    ///</summary>
+    ///<param name="item">The environment item to be recorded</param>
     public void UpdateEnvironmentItem(GameObject item)
     {
         environmentManager.UpdateItem(item);
     }
+
+    ///<summary>
+    /// Update the location of an environment item, if it has been recorded before.
+    /// If the item has not been recorded, a new one one will be inserted into the xml file.
+    ///</summary>
+    ///<param name="item">The environment item to be recorded</param>
     public void UpdateEnvironmentItem(MonoBehaviour item)
     {
         environmentManager.UpdateItem(item.gameObject);
