@@ -1,10 +1,10 @@
 /*
  * Created by Zehua Chen on 9/28/2017
- * 
+ *
  * The following items follows camel Casing
  * - Parameter Names
  * - Private Variables
- * 
+ *
  * The following items follows Pascal Casing
  * - Public Functions
  * - Public Properties
@@ -148,9 +148,6 @@ public class GameFolder
     {
         string fullName = document + extension;
         string filePathOnDisk = Path.Combine(this.Location, fullName);
-
-
-
         return File.Exists(filePathOnDisk);
     }
 
@@ -235,7 +232,7 @@ public class GameFolder
     public GameDataBase DeserializeDataBase<T>(string fileName)
     {
         GameDataBase tempDataBase;
-        if (this.DoesXmlFileExist(fileName)) 
+        if (this.DoesXmlFileExist(fileName))
         {
             fileName += ".xml";
             string filePathOnDisk = Path.Combine(this.Location, fileName);
@@ -246,10 +243,10 @@ public class GameFolder
                 tempDataBase = xs.Deserialize(fs) as GameDataBase;
             }
         }
-        else 
+        else
         {
             tempDataBase = (GameDataBase)Activator.CreateInstance(typeof(T));
-            
+
         }
 
         return tempDataBase;
@@ -271,12 +268,12 @@ public class GameFolder
         DirectoryInfo info = new DirectoryInfo(this.Location);
 
         //Delete all the files in this folder
-        foreach (var file in info.GetFiles()) 
+        foreach (var file in info.GetFiles())
         {
             file.Delete();
         }
 
-        //Delete all the files in the sub folders of this folders, and the sub folders 
+        //Delete all the files in the sub folders of this folders, and the sub folders
         //themselves.
         foreach (var subDirectories in info.GetDirectories())
         {
@@ -303,19 +300,41 @@ public class GameBundle : GameFolder
     /*
      * Properties
      */
-    public GameFolder SceneFolders 
+    public GameFolder SceneFolders
     {
-        get 
+        get
         {
             return _sceneFolders;
         }
     }
 
-    public GameFolder PlayerFolder 
+    public GameFolder PlayerFolder
     {
-        get 
+        get
         {
             return _playerFolder;
+        }
+    }
+
+    /// <summary>
+    /// The name given to the folder where all data are stored.
+    /// <summary>
+    public static string GameBundleName
+    {
+        get
+        {
+            return "Game Data";
+        }
+    }
+
+    /// <summary>
+    /// The meta data of the folder where all data are stored.
+    /// <summary>
+    public static string GameBundleMetaDataName
+    {
+        get
+        {
+            return "Game Data.meta";
         }
     }
 
@@ -337,11 +356,11 @@ public class GameBundle : GameFolder
         {
             GameBundle bundle;
             string applicationDataPath = Application.dataPath;
-            string gameBundlePath = Path.Combine(applicationDataPath, "Game Data");
+            string gameBundlePath = Path.Combine(applicationDataPath, GameBundle.GameBundleName);
 
-            //Game bundle is located in a folder under Application.dataPath named "Game Data"
-            //if the folder does not exist, create the folder, 
-            //otherwise, place the folder in the "Game Data" folder
+            // Game bundle is located in a folder under Application.dataPath named "Game Data"
+            // if the folder does not exist, create the folder,
+            // otherwise, place the folder in the "Game Data" folder
             if (!Directory.Exists(gameBundlePath)) {
                 Directory.CreateDirectory(gameBundlePath);
             }
@@ -371,7 +390,7 @@ public class GameBundle : GameFolder
         return bundle;
     }
 
-    public GameFolder OpenSpecificSceneFolder (string sceneNameOnDisk) 
+    public GameFolder OpenSpecificSceneFolder (string sceneNameOnDisk)
     {
         return this.SceneFolders.OpenFolder(sceneNameOnDisk);
     }
@@ -379,6 +398,12 @@ public class GameBundle : GameFolder
     public GameBundle (string path) : base(path)
     {
 
+    }
+
+    public void ClearAllFiles()
+    {
+        Debug.LogFormat("Delete all files in {0}", this._folderPathOnDisk);
+        Directory.Delete(this._folderPathOnDisk, true);
     }
 
 

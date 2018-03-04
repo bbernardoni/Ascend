@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 //For serialization
+using System.IO;
 using System.Xml.Serialization;
 
 public interface IDataBase
@@ -34,6 +35,35 @@ public class SceneManager : MonoBehaviour
 
     bool haveInitializedScene = false;
 
+    private static SceneManager sceneManager = null;
+
+    private bool isSceneCleared = false;
+
+    /// <summary>
+    /// The SceneManager object in this scene.
+    /// </summary>
+    /// <remarks>
+    /// SceneManager must be attached to a Unity's Gameobject.
+    /// </remarks>
+    public static SceneManager CurrentManager
+    {
+        get
+        {
+            if (sceneManager == null)
+            {
+                sceneManager = GameObject.FindObjectOfType<SceneManager>();
+                if (sceneManager == null)
+                {
+                    Debug.LogError("No Gameobject with SceneManager class attached!");
+                }
+                return sceneManager;
+            }
+            else
+            {
+                return sceneManager;
+            }
+        }
+    }
 
     // Use this for initialization
     void Awake()
@@ -52,14 +82,13 @@ public class SceneManager : MonoBehaviour
         environmentManager = (EnvironmentDataBase)sceneFolder.DeserializeDataBase<EnvironmentDataBase>(EnvironmentFileOnDisk, EnvironmentTriggerItems);
 
     }
+
     void Start()
     {
-
-
         //checkPointsManager.UpdateCheckPoint(1);
         //Reposition();
-
     }
+
     void DisableEnemies()
     {
         foreach (string enemy in enemiesManager)
@@ -118,10 +147,16 @@ public class SceneManager : MonoBehaviour
     ///</summary>
     public void Save()
     {
-        sceneFolder.SerializeDataBase(checkPointsManager, CheckPointFileNameOnDisk);
-        sceneFolder.SerializeDataBase(enemiesManager, EnemyFileNameOnDisk);
-        playerFolder.SerializeDataBase(playerManager, PlayerFileNameOnDisk);
-        sceneFolder.SerializeDataBase(environmentManager, EnvironmentFileOnDisk);
+        // Make sure if scene file is already deleted, the GameFolders will not try
+        // to serialize data.
+        if (!isSceneCleared)
+        {
+            sceneFolder.SerializeDataBase(checkPointsManager, CheckPointFileNameOnDisk);
+            sceneFolder.SerializeDataBase(enemiesManager, EnemyFileNameOnDisk);
+            playerFolder.SerializeDataBase(playerManager, PlayerFileNameOnDisk);
+            sceneFolder.SerializeDataBase(environmentManager, EnvironmentFileOnDisk);
+        }
+
     }
 
     /// <summary>
@@ -223,6 +258,24 @@ public class SceneManager : MonoBehaviour
     {
         sceneFolder.DeleteAllContent();
         Debug.Log("Files Cleared");
+    }
+
+    /// <summary>
+    /// Delete the file of the current user.
+    /// </summary>
+    public void DeleteFilesOfThisPlayer()
+    {
+#if UNITY_EDITOR
+        string fileToEditor = Application.dataPath;
+        string metaFilePath = Path.Combine(fileToEditor, GameBundle.GameBundleMetaDataName);
+        //Debug.Log(metaFilePath);
+        if (File.Exists(metaFilePath))
+        {
+            File.Delete(metaFilePath);
+        }
+#endif
+        mainBundle.ClearAllFiles();
+        isSceneCleared = true;
     }
 
 }
