@@ -2678,11 +2678,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114654134385416540, guid: 1c1a21b322d074c5ebe3878f87f90d9c,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 224860738016209794, guid: 1c1a21b322d074c5ebe3878f87f90d9c,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -2778,31 +2773,6 @@ Prefab:
       propertyPath: bgMusic
       value: 
       objectReference: {fileID: 315119679}
-    - target: {fileID: 114654134385416540, guid: 1c1a21b322d074c5ebe3878f87f90d9c,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114654134385416540, guid: 1c1a21b322d074c5ebe3878f87f90d9c,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114654134385416540, guid: 1c1a21b322d074c5ebe3878f87f90d9c,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 1898118133}
-    - target: {fileID: 114654134385416540, guid: 1c1a21b322d074c5ebe3878f87f90d9c,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: BeginNewGame
-      objectReference: {fileID: 0}
-    - target: {fileID: 114654134385416540, guid: 1c1a21b322d074c5ebe3878f87f90d9c,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1c1a21b322d074c5ebe3878f87f90d9c, type: 2}
   m_IsPrefabParent: 0
@@ -3166,12 +3136,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1898118133 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114038459522347572, guid: 1c1a21b322d074c5ebe3878f87f90d9c,
-    type: 2}
-  m_PrefabInternal: {fileID: 1387773362}
-  m_Script: {fileID: 11500000, guid: 587f639b0b259eb4bbf456063d9a1019, type: 3}
 --- !u!1 &1914614009
 GameObject:
   m_ObjectHideFlags: 0
