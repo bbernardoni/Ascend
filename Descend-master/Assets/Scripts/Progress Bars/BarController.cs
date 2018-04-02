@@ -15,18 +15,15 @@ public class BarController : MonoBehaviour
 		set
 		{
 			slider.value = value;
+			ValueChanged(value);
 		}
 	}
 
-	protected virtual void Awake()
+	protected delegate void ValueChangedHandler(float newValue);
+	protected event ValueChangedHandler ValueChanged;
+
+	public virtual void Awake()
 	{
 		slider = GetComponent<Slider>();
-
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-
 	}
 }
