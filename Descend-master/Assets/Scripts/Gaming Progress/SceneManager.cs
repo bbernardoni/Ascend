@@ -263,7 +263,7 @@ public class SceneManager : MonoBehaviour
     /// <summary>
     /// Delete the file of the current user.
     /// </summary>
-    public void DeleteFilesOfThisPlayer()
+    public void DeleteAllContent()
     {
 #if UNITY_EDITOR
         string fileToEditor = Application.dataPath;
@@ -277,5 +277,4 @@ public class SceneManager : MonoBehaviour
         mainBundle.ClearAllFiles();
         isSceneCleared = true;
     }
-
 }

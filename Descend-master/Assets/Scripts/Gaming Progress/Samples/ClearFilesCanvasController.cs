@@ -19,6 +19,6 @@ public class ClearFilesCanvasController : MonoBehaviour {
 	public void ClearAllFiles_OnClick()
 	{
 		//Debug.Log("Clear all files");
-		manager.DeleteFilesOfThisPlayer();
+		manager.DeleteAllContent();
 	}
 }
