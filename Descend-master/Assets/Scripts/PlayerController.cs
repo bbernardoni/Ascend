@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour {
     public bool grounded = false;
     public Animator anim;
     
+    //player dead
+    public bool alive = true;
     //ladder
     public bool onLadder;
     public float climbSpeed;
@@ -30,6 +32,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(!alive) return;
         grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
         //grounded = true;
         if (Input.GetButtonDown("Jump") && grounded)
@@ -40,6 +43,7 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D Other)
     {
+        if(!alive) return;
         if (Other.gameObject.CompareTag("Interactable") && Input.GetKeyDown(KeyCode.E))
         {
             Other.GetComponent<Interactable>().function(gameObject);
@@ -53,6 +57,7 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate()
     {
+        if(!alive) return;
         //handle movement
         float hMove = Input.GetAxis("Horizontal");
 
@@ -102,6 +107,7 @@ public class PlayerController : MonoBehaviour {
 
     void Flip()
     {
+        if(!alive) return;
         facingRight = !facingRight;
         //Vector3 theScale = transform.localScale;
         //theScale.x *= -1;
