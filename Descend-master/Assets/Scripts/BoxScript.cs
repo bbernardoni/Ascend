@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoxScript : Interactable {
-
-    public Rigidbody2D playerRB;
+    
     private Rigidbody2D rb2d;
     private AudioSource audio;
 
     public override void function(GameObject Player){
         beingHeld = !beingHeld;
+        GetComponent<FixedJoint2D>().enabled = beingHeld;
         if(beingHeld){
-            GetComponent<FixedJoint2D>().connectedBody = playerRB;
+            rb2d.bodyType = RigidbodyType2D.Dynamic;
         } else {
-            GetComponent<FixedJoint2D>().connectedBody = null;
+            //rb2d.bodyType = RigidbodyType2D.Kinematic;
         }
     }
 
