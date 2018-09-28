@@ -122,7 +122,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4719921556620160, guid: 8d5ce7e1d26bf48e794428ea83a2c663, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -9
+      value: 17.5
       objectReference: {fileID: 0}
     - target: {fileID: 4719921556620160, guid: 8d5ce7e1d26bf48e794428ea83a2c663, type: 2}
       propertyPath: m_LocalPosition.y
@@ -159,7 +159,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4127020620660198, guid: 8d5ce7e1d26bf48e794428ea83a2c663, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4944330047290298, guid: 8d5ce7e1d26bf48e794428ea83a2c663, type: 2}
       propertyPath: m_RootOrder
@@ -168,6 +168,11 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d5ce7e1d26bf48e794428ea83a2c663, type: 2}
   m_IsPrefabAsset: 0
+--- !u!50 &203121091 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 50282985776762380, guid: 8d5ce7e1d26bf48e794428ea83a2c663,
+    type: 2}
+  m_PrefabInternal: {fileID: 129652323}
 --- !u!1 &491350745
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,11 +375,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!4 &673188485 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4719921556620160, guid: 8d5ce7e1d26bf48e794428ea83a2c663,
-    type: 2}
-  m_PrefabInternal: {fileID: 129652323}
 --- !u!1 &694468122
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,9 +559,10 @@ GameObject:
   - component: {fileID: 1329593653}
   - component: {fileID: 1329593652}
   - component: {fileID: 1329593651}
+  - component: {fileID: 1329593657}
   m_Layer: 8
   m_Name: Box
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -577,8 +578,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f1c5e6b39b2c734eab085614bd67b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb2d: {fileID: 1329593654}
-  audio: {fileID: 1329593652}
+  InteractableType: 2
+  playerRB: {fileID: 203121091}
 --- !u!82 &1329593652
 AudioSource:
   m_ObjectHideFlags: 0
@@ -707,7 +708,7 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1329593650}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -773,9 +774,26 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1329593650}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.2375, y: -0.88772744, z: 0}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1}
+  m_LocalPosition: {x: 14.11, y: 1.094818, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 673188485}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!255 &1329593657
+FixedJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1329593650}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 1
+  m_ConnectedRigidBody: {fileID: 203121091}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 1
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: -4.2375, y: -0.88772744}
+  m_DampingRatio: 0
+  m_Frequency: 0

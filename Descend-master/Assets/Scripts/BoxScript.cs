@@ -2,15 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxScript : MonoBehaviour {
+public class BoxScript : Interactable {
 
-    public Rigidbody2D rb2d;
-    public AudioSource audio;
-    
-	// Use this for initialization
-	void Start () {
-		
-	}
+    public Rigidbody2D playerRB;
+    private Rigidbody2D rb2d;
+    private AudioSource audio;
+
+    public override void function(GameObject Player){
+        beingHeld = !beingHeld;
+        if(beingHeld){
+            GetComponent<FixedJoint2D>().connectedBody = playerRB;
+        } else {
+            GetComponent<FixedJoint2D>().connectedBody = null;
+        }
+    }
+
+    // Use this for initialization
+    void Start (){
+        rb2d = GetComponent<Rigidbody2D>();
+        audio = GetComponent<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -25,4 +36,5 @@ public class BoxScript : MonoBehaviour {
             audio.Stop();
         }
 	}
+    
 }
