@@ -56,16 +56,16 @@ public class PauseMenu : MonoBehaviour {
     public void BeginNewGame() 
     {
         // Debug.Log("Delete files");
-        SceneManager manager = null;
-        manager = MonoBehaviour.FindObjectOfType<SceneManager>();
-        if (manager != null) 
-        {
-            manager.DeleteAllContent();
-        }
-        else 
-        {
-            Debug.LogWarning("No \"SceneManager\" Found!");
-        }
+        // SceneManager manager = null;
+        // manager = MonoBehaviour.FindObjectOfType<SceneManager>();
+        // if (manager != null) 
+        // {
+        //     manager.DeleteAllContent();
+        // }
+        // else 
+        // {
+        //     Debug.LogWarning("No \"SceneManager\" Found!");
+        // }
     }
 
 }
