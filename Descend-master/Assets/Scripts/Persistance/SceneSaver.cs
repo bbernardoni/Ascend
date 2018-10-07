@@ -203,6 +203,15 @@ public class SceneSaver : MonoBehaviour
             Directory.Delete(scenePath, true);
         }
     }
+    
+    /// <summary>
+    /// Delete all data of the current user
+    /// </summary>
+    public static void DeleteAllData()
+    {
+        var userDataPath = Path.Combine(PathToPutUserDataFolder, NameofUserDataFolder);
+        Directory.Delete(userDataPath);
+    }
 
     /// <summary>
     /// Write the xml document to disk blocking the current thread
