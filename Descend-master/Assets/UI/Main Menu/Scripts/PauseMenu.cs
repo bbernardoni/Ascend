@@ -8,6 +8,12 @@ public class PauseMenu : MonoBehaviour {
     public static bool isPaused = false;
     public GameObject menu; //reference to menu
     public GameObject settingsMenu; //reference to settings
+    
+    [SerializeField]
+    private SceneSaver _sceneSaver;
+    
+    [SerializeField]
+    private string _firstLevelName;
 	
     //resume game function
     public void Resume()
@@ -56,16 +62,18 @@ public class PauseMenu : MonoBehaviour {
     public void BeginNewGame() 
     {
         // Debug.Log("Delete files");
-        SceneManager manager = null;
-        manager = MonoBehaviour.FindObjectOfType<SceneManager>();
-        if (manager != null) 
-        {
-            manager.DeleteAllContent();
-        }
-        else 
-        {
-            Debug.LogWarning("No \"SceneManager\" Found!");
-        }
+        // SceneManager manager = null;
+        // manager = MonoBehaviour.FindObjectOfType<SceneManager>();
+        // if (manager != null) 
+        // {
+        //     manager.DeleteAllContent();
+        // }
+        // else 
+        // {
+        //     Debug.LogWarning("No \"SceneManager\" Found!");
+        // }
+        SceneSaver.DeleteAllData();
+        SceneManager.LoadScene(_firstLevelName);
     }
 
 }
