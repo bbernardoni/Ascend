@@ -12,7 +12,19 @@ public abstract class Interactable : MonoBehaviour {
     public TYPE InteractableType;
 
     public abstract void function(GameObject Player);
-    public bool inUse;
-    public bool beingHeld;
+    protected bool inUse;
+    protected bool beingHeld;
+    [HideInInspector] public bool inTrigger;
+    [HideInInspector] public GameObject player;
+
+    void Update(){
+        if(inTrigger && Input.GetKeyDown(KeyCode.E)){
+            function(player);
+        }
+
+        UpdateInteractable();
+    }
+
+    protected virtual void UpdateInteractable() { }
 
 }
