@@ -1,9 +1,9 @@
-# Descend
+# Ascend
 
 Independent game project created by University of Illinois - Urbana Champaign students.
 
 Summary:
-Descend is an action puzzle 2D platformer created on the Unity game engine. 
+Ascend is an action puzzle 2D platformer created on the Unity game engine. 
 
 Credits:
 
