@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
 
     [HideInInspector] public bool facingRight = true;
     [HideInInspector] public bool jump = false;
+    [HideInInspector] public bool holdingBox = false;
 
     public float moveForce = 365f;
     public float maxSpeed = 5f;
@@ -14,6 +15,8 @@ public class PlayerController : MonoBehaviour {
     public bool grounded = false;
     public Animator anim;
     
+    //player dead
+    public bool alive = true;
     //ladder
     public bool onLadder;
     public float climbSpeed;
@@ -30,20 +33,37 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(!alive) return;
         grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
         //grounded = true;
-        if (Input.GetButtonDown("Jump") && grounded)
+        if (Input.GetButtonDown("Jump") && grounded && !holdingBox)
         {
             jump = true;
         }
     }
 
+    void OnTriggerEnter2D(Collider2D Other)
+    {
+        if(!alive) return;
+        if(Other.gameObject.CompareTag("Interactable"))
+        {
+            Other.GetComponent<Interactable>().inTrigger = true;
+            Other.GetComponent<Interactable>().player = gameObject;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D Other)
+    {
+        if(!alive) return;
+        if(Other.gameObject.CompareTag("Interactable"))
+        {
+            Other.GetComponent<Interactable>().inTrigger = false;
+        }
+    }
+
     void OnTriggerStay2D(Collider2D Other)
     {
-        if (Other.gameObject.CompareTag("Interactable") && Input.GetKeyDown(KeyCode.E))
-        {
-            Other.GetComponent<Interactable>().function(gameObject);
-        }
+        if(!alive) return;
         if(Other.gameObject.CompareTag("Enemy") && Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("STUN!");
@@ -53,14 +73,19 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate()
     {
+        if(!alive) return;
         //handle movement
         float hMove = Input.GetAxis("Horizontal");
+        float curMaxSpeed = maxSpeed;
 
-        if (hMove * rb2d.velocity.x < maxSpeed)
+        if(holdingBox)
+            curMaxSpeed /= 2.0f;
+
+        if (hMove * rb2d.velocity.x < curMaxSpeed)
             rb2d.AddForce(Vector2.right * hMove * moveForce);
 
-        if (Mathf.Abs(rb2d.velocity.x) > maxSpeed)
-            rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * maxSpeed, rb2d.velocity.y);
+        if (Mathf.Abs(rb2d.velocity.x) > curMaxSpeed)
+            rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * curMaxSpeed, rb2d.velocity.y);
 
         if (hMove > 0 && !facingRight)
             Flip();
@@ -102,6 +127,7 @@ public class PlayerController : MonoBehaviour {
 
     void Flip()
     {
+        if(!alive) return;
         facingRight = !facingRight;
         //Vector3 theScale = transform.localScale;
         //theScale.x *= -1;
