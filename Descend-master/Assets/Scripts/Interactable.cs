@@ -12,9 +12,9 @@ public abstract class Interactable : MonoBehaviour {
     public TYPE InteractableType;
 
     public abstract void function(GameObject Player);
-    protected bool inUse;
-    protected bool beingHeld;
-    [HideInInspector] public bool inTrigger;
+    protected bool inUse = false;
+    protected bool beingHeld = false;
+    [HideInInspector] public bool inTrigger = false;
     [HideInInspector] public GameObject player;
 
     void Update(){

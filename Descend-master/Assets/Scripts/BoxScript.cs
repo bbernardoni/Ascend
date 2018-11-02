@@ -29,7 +29,8 @@ public class BoxScript : Interactable {
     void OnJointBreak2D(Joint2D brokenJoint){
         beingHeld = false;
         rb2d.freezeRotation = true;
-        holder.GetComponent<PlayerController>().holdingBox = false;
+        if(holder)
+            holder.GetComponent<PlayerController>().holdingBox = false;
         //rb2d.velocity = new Vector2(0.0f, rb2d.velocity.y);
     }
 
