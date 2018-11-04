@@ -48,7 +48,6 @@ public class PlayerController : MonoBehaviour {
         if(Other.gameObject.CompareTag("Interactable"))
         {
             Other.GetComponent<Interactable>().inTrigger = true;
-            Other.GetComponent<Interactable>().player = gameObject;
         }
     }
 

@@ -11,12 +11,10 @@ public class ElevatorButton : Interactable {
 
     public ElevatorButton()
     {
-        InteractableType = TYPE.ENVIRONMENT;
         inUse = false;
-        beingHeld = false;
     }
 
-    override public void function(GameObject Player)
+    override public void function()
     {
         //if (!inUse)
         //{

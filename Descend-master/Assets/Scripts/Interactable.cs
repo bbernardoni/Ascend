@@ -4,22 +4,21 @@ using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour {
 
-	public enum TYPE
+	/* not currently being used
+    public enum TYPE
     {
         MELEE, THROWABLE, ENVIRONMENT
     }
 
-    public TYPE InteractableType;
+    public TYPE InteractableType;*/
 
-    public abstract void function(GameObject Player);
+    public abstract void function();
     protected bool inUse = false;
-    protected bool beingHeld = false;
     [HideInInspector] public bool inTrigger = false;
-    [HideInInspector] public GameObject player;
 
     void Update(){
         if(inTrigger && Input.GetKeyDown(KeyCode.E)){
-            function(player);
+            function();
         }
 
         UpdateInteractable();
