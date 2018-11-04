@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour {
     void OnTriggerExit2D(Collider2D Other)
     {
         if(!alive) return;
-        if(Other.gameObject.CompareTag("Interactable"))
+        if(Other.gameObject.CompareTag("Interactable") && !Other.transform.IsChildOf(transform))
         {
             Other.GetComponent<Interactable>().inTrigger = false;
         }
