@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 50304134765027668}
   m_Layer: 0
   m_Name: Lamp
-  m_TagString: Lamp
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0293a73ecbc947b1aab3e8db8ddd131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inTrigger: 0
 --- !u!212 &212501281632576748
 SpriteRenderer:
   m_ObjectHideFlags: 1
