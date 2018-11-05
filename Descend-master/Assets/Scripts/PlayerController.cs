@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    [HideInInspector] public bool facingRight = true;
+    [HideInInspector] public static bool facingRight = true;
     [HideInInspector] public bool jump = false;
     [HideInInspector] public bool holdingBox = false;
 
@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour {
 
     private Rigidbody2D rb2d;
 
+    static public bool getfacingRight(){
+        return facingRight;
+    }
 	// Use this for initialization
 	void Start () {
         rb2d = GetComponent<Rigidbody2D>();
