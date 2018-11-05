@@ -5,9 +5,11 @@ using UnityEngine;
 public class TrapScript : MonoBehaviour {
 
     bool activated;
+    public Animator anim;
+    public AudioSource audio;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         activated = false;
     }
 
@@ -16,12 +18,13 @@ public class TrapScript : MonoBehaviour {
         if (!activated)
         {
             Debug.Log("trap collision: " + collision.gameObject.name);
-            if (collision.gameObject == GameObject.Find("enemy") || collision.gameObject == GameObject.Find("Player"))
+            if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Enemy")
             {
                 activated = true;
                 Destroy(collision.gameObject); //Replace with kill function later
-                GetComponent<SpriteRenderer>().color = Color.blue; //Replace with trap animation later
                 GetComponent<Collider2D>().enabled = false;
+                anim.Play("trap_close");
+                audio.Play();
             }
         }
     }

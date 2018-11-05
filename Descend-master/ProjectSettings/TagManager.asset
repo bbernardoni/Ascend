@@ -10,6 +10,7 @@ TagManager:
   - Enemy
   - Lamp
   - Oil Barrel
+  - Trap
   layers:
   - Default
   - TransparentFX
