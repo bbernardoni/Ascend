@@ -11,12 +11,10 @@ public class ElevatorButton : Interactable {
 
     public ElevatorButton()
     {
-        InteractableType = TYPE.ENVIRONMENT;
         inUse = false;
-        beingHeld = false;
     }
 
-    override public void function(GameObject Player)
+    override public void function()
     {
         //if (!inUse)
         //{
@@ -33,7 +31,7 @@ public class ElevatorButton : Interactable {
             Debug.Log("Moving elevator...");
             elevator.Translate(Vector2.up * elevatorRate);
             distance += Mathf.Abs(elevatorRate);
-            yield return new WaitForSeconds(Mathf.Abs(elevatorRate));
+            yield return new WaitForSeconds(0.016f);
         }
         //inUse = false;
     }

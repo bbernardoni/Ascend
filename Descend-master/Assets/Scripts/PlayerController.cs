@@ -48,14 +48,13 @@ public class PlayerController : MonoBehaviour {
         if(Other.gameObject.CompareTag("Interactable"))
         {
             Other.GetComponent<Interactable>().inTrigger = true;
-            Other.GetComponent<Interactable>().player = gameObject;
         }
     }
 
     void OnTriggerExit2D(Collider2D Other)
     {
         if(!alive) return;
-        if(Other.gameObject.CompareTag("Interactable"))
+        if(Other.gameObject.CompareTag("Interactable") && !Other.transform.IsChildOf(transform))
         {
             Other.GetComponent<Interactable>().inTrigger = false;
         }
