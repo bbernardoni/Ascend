@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-m_EditorVersion: 2017.3.1f1
-=======
-m_EditorVersion: 2018.2.9f1
->>>>>>> master
+m_EditorVersion: 2018.2.14f1
