@@ -1,26 +1,19 @@
-# Descend
+# Ascend
 
 Independent game project created by University of Illinois - Urbana Champaign students.
 
-Summary:
-Descend is an action puzzle 2D platformer created on the Unity game engine. 
+Summary: Ascend is an action puzzle 2D platformer created on the Unity game engine.
 
 Credits:
 
-Game Programmers:
-  Josh Burke, 
-  Peter (Zehua) Chen, 
-  Andre Garner, 
-  Diana Huang
-  
-Artist:
-  Sarah Elizabeth Anderson
-  
-Game Designer:
-  Anirudh Sivaraman
+Game Manager: Josh Burke
 
-Audio Creator:
-  Will Bauer
-  
-Game Manager:
-  Diana Huang
+Game Programmers: Anmol Agarwal, Will Bauer, Josh Burke, Bennett Bernardoni
+
+Artists: Aras Yazgan, Litong Zeng
+
+Game Designer: Andre Garner
+
+Audio Creator: Will Bauer
+
+Past Contributors: Sarah Elizabeth Anderson, Peter (Zehua) Chen, Diana Huang, Anirudh Sivaraman
