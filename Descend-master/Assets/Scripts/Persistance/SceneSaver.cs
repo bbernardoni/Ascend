@@ -10,8 +10,8 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Collections;
-
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public delegate void SceneSavingStartedHandler();
 public delegate void SceneSavingEndedHandler();
@@ -37,33 +37,29 @@ public class SceneSaver : MonoBehaviour
     {
         get { return "savables"; }
     }
-    
+
     /// <summary>
     /// Path to the folder where UserData folder is at.
     /// </summary>
     public static string PathToPutUserDataFolder
     {
-        get 
-        {
+        get {
             return Application.dataPath;
         }
     }
-    
+
     /// <summary>
     /// Name of the user data folder.
     /// </summary>
-    public static string NameofUserDataFolder 
+    public static string NameofUserDataFolder
     {
-        get 
-        {
+        get {
             return "User Data";
         }
     }
 
-    [SerializeField]
-    protected string sceneName;
-    [SerializeField]
-    protected Savable[] savables;
+    private string sceneName;
+    private Savable[] savables;
 
     private string scenePath = null;
 
@@ -81,6 +77,9 @@ public class SceneSaver : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        // Get Scene name
+        sceneName = SceneManager.GetActiveScene().name;
+
         // Make sure "User Data" exists
         string userDataPath = Path.Combine(
             SceneSaver.PathToPutUserDataFolder,
@@ -111,9 +110,9 @@ public class SceneSaver : MonoBehaviour
     /// </param>
     protected void EnsureExistance(string path)
     {
-        if (path == "") { return; }
+        if(path == "") { return; }
 
-        if (!Directory.Exists(path))
+        if(!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
         }
@@ -127,11 +126,13 @@ public class SceneSaver : MonoBehaviour
     /// </param>
     public void Save(bool blocking = true)
     {
-        if (savables.Length == 0) return;
+        savables = FindObjectsOfType<Savable>();
+        if(savables.Length == 0) return;
 
         EnsureExistance(scenePath);
 
-        SceneSavingStarted();
+        if (SceneSavingStarted != null)
+            SceneSavingStarted();
 
         string filePath = Path.Combine(scenePath, SceneSaver.SavablesFileName);
 
@@ -139,7 +140,7 @@ public class SceneSaver : MonoBehaviour
         XmlElement rootElement = doc.CreateElement(SavablesDocumentElementTag);
         doc.AppendChild(rootElement);
 
-        foreach (var savable in savables)
+        foreach(var savable in savables)
         {
             XmlElement containerElement = doc.CreateElement(savable.ContainerElementTag);
             doc.DocumentElement.AppendChild(containerElement);
@@ -148,11 +149,12 @@ public class SceneSaver : MonoBehaviour
             savable.OnSave(store);
 
         }
-        
-        if (blocking) SaveXmlDocumentBlocking(doc, filePath);
-        else SaveXmlDocumentNonBlocking(doc,filePath);
-        
-        SceneSavingEnded();
+
+        if(blocking) SaveXmlDocumentBlocking(doc, filePath);
+        else SaveXmlDocumentNonBlocking(doc, filePath);
+
+        if(SceneSavingEnded != null)
+            SceneSavingEnded();
     }
 
     /// <summary> 
@@ -160,19 +162,20 @@ public class SceneSaver : MonoBehaviour
     /// </summary>
     public void Load()
     {
-        if (savables.Length == 0) return;
+        savables = FindObjectsOfType<Savable>();
+        if(savables.Length == 0) return;
 
         EnsureExistance(scenePath);
 
         var filePath = Path.Combine(scenePath, SceneSaver.SavablesFileName);
 
-        if (!File.Exists(filePath)) return;
+        if(!File.Exists(filePath)) return;
 
         XmlDocument doc = new XmlDocument();
         doc.Load(filePath);
         XmlNodeList containerElements = doc.DocumentElement.ChildNodes;
 
-        for (var i = 0; i < containerElements.Count; i++)
+        for(var i = 0; i < containerElements.Count; i++)
         {
             var savable = savables[i];
             var containerElement = (XmlElement)containerElements[i];
@@ -188,29 +191,29 @@ public class SceneSaver : MonoBehaviour
     /// </summary>
     public void DeleteSceneData()
     {
-        if (scenePath == null)
+        if(scenePath == null)
         {
             scenePath = Path.Combine(
                 SceneSaver.PathToPutUserDataFolder,
                 SceneSaver.NameofUserDataFolder
             );
-            
+
             scenePath = Path.Combine(scenePath, sceneName);
         }
 
-        if (Directory.Exists(scenePath))
+        if(Directory.Exists(scenePath))
         {
             Directory.Delete(scenePath, true);
         }
     }
-    
+
     /// <summary>
     /// Delete all data of the current user
     /// </summary>
     public static void DeleteAllData()
     {
         var userDataPath = Path.Combine(PathToPutUserDataFolder, NameofUserDataFolder);
-        Directory.Delete(userDataPath);
+        Directory.Delete(userDataPath, true);
     }
 
     /// <summary>
@@ -220,12 +223,12 @@ public class SceneSaver : MonoBehaviour
     /// <param name="filePath">the file path to save the xml document to</param>
     private void SaveXmlDocumentBlocking(XmlDocument doc, string filePath)
     {
-        using (XmlWriter writer = XmlWriter.Create(filePath))
+        using(XmlWriter writer = XmlWriter.Create(filePath))
         {
             doc.Save(writer);
         }
     }
-    
+
     /// <summary>
     /// Write the xml document to disk NOT blocking the current thread
     /// </summary>
@@ -233,7 +236,7 @@ public class SceneSaver : MonoBehaviour
     /// <param name="filePath">the file path to save the xml document to</param>
     private void SaveXmlDocumentNonBlocking(XmlDocument doc, string filePath)
     {
-        using (XmlWriter writer = XmlWriter.Create(filePath))
+        using(XmlWriter writer = XmlWriter.Create(filePath))
         {
             doc.Save(writer);
         }
