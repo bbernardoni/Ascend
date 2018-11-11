@@ -2,26 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrapScript : MonoBehaviour {
-
+public class TrapScript : MonoBehaviour
+{
     bool activated;
+    public Animator anim;
+    public AudioSource audio;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         activated = false;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collider)
     {
         if (!activated)
         {
-            Debug.Log("trap collision: " + collision.gameObject.name);
-            if (collision.gameObject == GameObject.Find("enemy") || collision.gameObject == GameObject.Find("Player"))
+            Debug.Log("trap collision: " + collider.gameObject.name);
+            if (collider.gameObject.tag == "Player" || collider.gameObject.tag == "Enemy")
             {
                 activated = true;
-                Destroy(collision.gameObject); //Replace with kill function later
-                GetComponent<SpriteRenderer>().color = Color.blue; //Replace with trap animation later
-                GetComponent<Collider2D>().enabled = false;
+                Destroy(collider.gameObject); //Replace with kill function later
+                collider.enabled = false;
+                anim.Play("trap_close");
+                audio.Play();
             }
         }
     }
