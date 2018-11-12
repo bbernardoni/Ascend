@@ -202,6 +202,6 @@ public class EnemyController : MonoBehaviour {
 
     public void Kill()
     {
-        Destroy(gameObject); //Add animation later
+        Destroy(gameObject); //Add death animation later
     }
 }

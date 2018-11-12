@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
@@ -17,6 +18,8 @@ public class PlayerController : MonoBehaviour {
     
     //player death
     private bool dying = false;
+    public float deathTime = 2.0f;
+    public Image fader;
     private float deathTimer;
 
     //ladder
@@ -38,6 +41,7 @@ public class PlayerController : MonoBehaviour {
         if(dying)
         {
             deathTimer -= Time.deltaTime;
+            fader.color = new Color(0, 0, 0, 1-deathTimer/deathTime);
             if(deathTimer <= 0.0f)
             {
                 Destroy(gameObject);
@@ -151,6 +155,6 @@ public class PlayerController : MonoBehaviour {
     public void Kill()
     {
         dying = true;
-        deathTimer = 2.0f;
+        deathTimer = deathTime;
     }
 }
