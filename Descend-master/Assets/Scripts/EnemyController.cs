@@ -149,7 +149,7 @@ public class EnemyController : MonoBehaviour {
         if(health - f < 0)
         {
             health = 0;
-            die();
+            Kill();
         }
         else
         {
@@ -200,8 +200,8 @@ public class EnemyController : MonoBehaviour {
         }
     }
 
-    void die()
+    public void Kill()
     {
-
+        Destroy(gameObject); //Add animation later
     }
 }

@@ -22,8 +22,13 @@ public class TrapScript : MonoBehaviour
             if (collider.gameObject.tag == "Player" || collider.gameObject.tag == "Enemy")
             {
                 activated = true;
-                Destroy(collider.gameObject); //Replace with kill function later
-                collider.enabled = false;
+                if(collider.gameObject.tag == "Player") {
+                    PlayerController player = collider.gameObject.GetComponent<PlayerController>();
+                    player.Kill();
+                } else if(collider.gameObject.tag == "Enemy"){
+                    EnemyController enemy = collider.gameObject.GetComponent<EnemyController>();
+                    enemy.Kill();
+                }
                 anim.Play("trap_close");
                 audio.Play();
             }

@@ -15,8 +15,10 @@ public class PlayerController : MonoBehaviour {
     public bool grounded = false;
     public Animator anim;
     
-    //player dead
-    public bool alive = true;
+    //player death
+    private bool dying = false;
+    private float deathTimer;
+
     //ladder
     public bool onLadder;
     public float climbSpeed;
@@ -33,7 +35,16 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(!alive) return;
+        if(dying)
+        {
+            deathTimer -= Time.deltaTime;
+            if(deathTimer <= 0.0f)
+            {
+                Destroy(gameObject);
+            }
+            return;
+        }
+
         grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
         //grounded = true;
         if (Input.GetButtonDown("Jump") && grounded && !holdingBox)
@@ -44,7 +55,7 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D Other)
     {
-        if(!alive) return;
+        if(dying) return;
         if(Other.gameObject.CompareTag("Interactable"))
         {
             Other.GetComponent<Interactable>().inTrigger = true;
@@ -53,7 +64,7 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D Other)
     {
-        if(!alive) return;
+        if(dying) return;
         if(Other.gameObject.CompareTag("Interactable") && !Other.transform.IsChildOf(transform))
         {
             Other.GetComponent<Interactable>().inTrigger = false;
@@ -62,7 +73,7 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D Other)
     {
-        if(!alive) return;
+        if(dying) return;
         if(Other.gameObject.CompareTag("Enemy") && Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("STUN!");
@@ -72,7 +83,12 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if(!alive) return;
+        if(dying)
+        {
+            rb2d.velocity = Vector2.zero;
+            return;
+        }
+
         //handle movement
         float hMove = Input.GetAxis("Horizontal");
         float curMaxSpeed = maxSpeed;
@@ -126,12 +142,15 @@ public class PlayerController : MonoBehaviour {
 
     void Flip()
     {
-        if(!alive) return;
         facingRight = !facingRight;
         //Vector3 theScale = transform.localScale;
         //theScale.x *= -1;
         //transform.localScale = theScale;
     }
 
-    
+    public void Kill()
+    {
+        dying = true;
+        deathTimer = 2.0f;
+    }
 }
