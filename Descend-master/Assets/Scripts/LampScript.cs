@@ -13,6 +13,8 @@ public class LampScript : Interactable
     private Vector3 end, force;
     private float startTime, endTime, deltaTime;
 
+    public AudioSource audioFill;
+
     public override void function()
     {
         // toggle holding state
@@ -60,6 +62,7 @@ public class LampScript : Interactable
         if(Input.GetButtonDown("Refill") && inUse && overBarrel)
         {
             lt.intensity = 1.5f;
+            audioFill.Play();
         }
         lt.intensity = lt.intensity - 0.001f;
     }

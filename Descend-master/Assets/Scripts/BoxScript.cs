@@ -41,10 +41,9 @@ public class BoxScript : Interactable {
     
     protected override void UpdateInteractable() {
         // audio stuff
-		if(rb2d.velocity.magnitude > 0.1) {
+		if(Mathf.Abs(rb2d.velocity.x) > 0.1) {
             if(!boxAudio.isPlaying)
                 boxAudio.Play();
-            boxAudio.pitch = rb2d.velocity.magnitude;
         } else {
             boxAudio.Stop();
         }
