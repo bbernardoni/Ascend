@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour, ISavable {
 
     [HideInInspector] public bool facingRight = true;
     [HideInInspector] public bool jump = false;
@@ -156,5 +156,29 @@ public class PlayerController : MonoBehaviour {
     {
         dying = true;
         deathTimer = deathTime;
+    }
+
+    public string ContainerElementTag
+    {
+        get { return gameObject.name; }
+    }
+
+    public void OnSave(ISavableWriteStore store)
+    {
+        store.WriteVector3("pos", rb2d.position);
+    }
+
+    public void OnLoad(ISavableReadStore store)
+    {
+        facingRight = true;
+        jump = false;
+        holdingBox = false;
+
+        dying = false;
+        onLadder = false;
+
+        rb2d.position = store.ReadVector3("pos");
+        rb2d.velocity = Vector2.zero;
+        fader.color = new Color(0, 0, 0, 0);
     }
 }
