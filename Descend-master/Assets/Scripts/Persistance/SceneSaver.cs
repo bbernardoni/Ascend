@@ -39,6 +39,11 @@ public class SceneSaver : MonoBehaviour
         get { return "savables"; }
     }
 
+    private static string SavablesContainerElementTag
+    {
+        get { return "container"; }
+    }
+
     /// <summary>
     /// Path to the folder where UserData folder is at.
     /// </summary>
@@ -143,7 +148,13 @@ public class SceneSaver : MonoBehaviour
 
         foreach(var savable in savables)
         {
-            XmlElement containerElement = doc.CreateElement(savable.ContainerElementTag);
+            XmlElement containerElement = doc.CreateElement(SceneSaver.SavablesContainerElementTag);
+            var attributes = containerElement.Attributes;
+
+            var containerNameAttr = doc.CreateAttribute("name");
+            containerNameAttr.InnerText = savable.ToString();
+
+            attributes.Append(containerNameAttr);
             doc.DocumentElement.AppendChild(containerElement);
 
             XmlSavableStore store = new XmlSavableStore(doc, containerElement);

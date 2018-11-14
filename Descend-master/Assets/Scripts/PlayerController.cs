@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour, ISavable {
     public float deathTime = 2.0f;
     public Image fader;
     private float deathTimer;
+    public SceneSaver sceneSaver;
 
     //ladder
     public bool onLadder;
@@ -44,7 +45,8 @@ public class PlayerController : MonoBehaviour, ISavable {
             fader.color = new Color(0, 0, 0, 1-deathTimer/deathTime);
             if(deathTimer <= 0.0f)
             {
-                Destroy(gameObject);
+                sceneSaver.Load();
+                fader.color = new Color(0, 0, 0, 0);
             }
             return;
         }
@@ -62,6 +64,7 @@ public class PlayerController : MonoBehaviour, ISavable {
         if(dying) return;
         if(Other.gameObject.CompareTag("Interactable"))
         {
+            Debug.Log("Player Trigger Enter: "+Other.name);
             Other.GetComponent<Interactable>().inTrigger = true;
         }
     }
@@ -71,6 +74,7 @@ public class PlayerController : MonoBehaviour, ISavable {
         if(dying) return;
         if(Other.gameObject.CompareTag("Interactable") && !Other.transform.IsChildOf(transform))
         {
+            Debug.Log("Player Trigger Exit: "+Other.name);
             Other.GetComponent<Interactable>().inTrigger = false;
         }
     }
@@ -158,11 +162,6 @@ public class PlayerController : MonoBehaviour, ISavable {
         deathTimer = deathTime;
     }
 
-    public string ContainerElementTag
-    {
-        get { return gameObject.name; }
-    }
-
     public void OnSave(ISavableWriteStore store)
     {
         store.WriteVector3("pos", rb2d.position);
@@ -179,6 +178,5 @@ public class PlayerController : MonoBehaviour, ISavable {
 
         rb2d.position = store.ReadVector3("pos");
         rb2d.velocity = Vector2.zero;
-        fader.color = new Color(0, 0, 0, 0);
     }
 }

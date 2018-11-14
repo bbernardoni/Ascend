@@ -53,11 +53,6 @@ public class BoxScript : Interactable, ISavable {
         if(!inUse && rb2d.velocity.magnitude == 0.0f)
             rb2d.bodyType = RigidbodyType2D.Kinematic;
     }
-    
-    public string ContainerElementTag
-    {
-        get { return gameObject.name; }
-    }
 
     public void OnSave(ISavableWriteStore store)
     {
@@ -68,8 +63,8 @@ public class BoxScript : Interactable, ISavable {
     {
         inUse = false;
         rb2d.position = store.ReadVector3("pos");
-        rb2d.velocity = Vector2.zero;
-        rb2d.bodyType = RigidbodyType2D.Kinematic;
+        rb2d.velocity = new Vector2(0, 0.001f);
+        rb2d.bodyType = RigidbodyType2D.Dynamic;
         rb2d.freezeRotation = true;
         FixedJoint2D joint = GetComponent<FixedJoint2D>();
         if(joint)

@@ -15,10 +15,6 @@ using UnityEngine;
 public interface ISavable
 {
     /// <summary>
-    /// The the tag of the xml element which contains the data of a savable object
-    /// </summary>
-    string ContainerElementTag { get; }
-    /// <summary>
     /// Called when the SceneSaver object is saving the scene
     /// </summary>
     /// <param name="store">store to save data to</param>

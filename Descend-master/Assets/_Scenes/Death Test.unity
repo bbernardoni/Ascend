@@ -648,11 +648,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4376432591917978, guid: a8bf9059aa6401a4ab634627964371d0, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -14.73
+      value: -12.179
       objectReference: {fileID: 0}
     - target: {fileID: 4376432591917978, guid: a8bf9059aa6401a4ab634627964371d0, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -16.54
+      value: -16.549
       objectReference: {fileID: 0}
     - target: {fileID: 4376432591917978, guid: a8bf9059aa6401a4ab634627964371d0, type: 2}
       propertyPath: m_LocalPosition.z
@@ -812,6 +812,11 @@ Prefab:
       propertyPath: eventSys
       value: 
       objectReference: {fileID: 735015181}
+    - target: {fileID: 224943842117515240, guid: 1c1a21b322d074c5ebe3878f87f90d9c,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.000061035156
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c1a21b322d074c5ebe3878f87f90d9c, type: 2}
   m_IsPrefabAsset: 0
@@ -911,6 +916,11 @@ Prefab:
       propertyPath: fader
       value: 
       objectReference: {fileID: 564073819}
+    - target: {fileID: 114636455868082282, guid: c100d852d3aee47a18015174b0ec8a53,
+        type: 2}
+      propertyPath: sceneSaver
+      value: 
+      objectReference: {fileID: 44839381}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c100d852d3aee47a18015174b0ec8a53, type: 2}
   m_IsPrefabAsset: 0

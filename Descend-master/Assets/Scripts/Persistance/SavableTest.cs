@@ -9,11 +9,6 @@ public class SavableTest : MonoBehaviour, ISavable
     private bool up;
 
     public SceneSaver ss;
-
-    public string ContainerElementTag
-    {
-        get { return "Elevator"; }
-    }
     
     public void OnSave(ISavableWriteStore store)
     {
