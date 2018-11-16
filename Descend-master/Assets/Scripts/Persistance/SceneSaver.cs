@@ -10,6 +10,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -185,12 +186,17 @@ public class SceneSaver : MonoBehaviour
 
         XmlDocument doc = new XmlDocument();
         doc.Load(filePath);
-        XmlNodeList containerElements = doc.DocumentElement.ChildNodes;
 
-        int i = 0;
+        Dictionary<string, XmlElement> containerElements = new Dictionary<string, XmlElement>();
+        foreach(XmlElement container in doc.DocumentElement.ChildNodes)
+        {
+            string name = container.Attributes[0].InnerText;
+            containerElements.Add(name, container);
+        }
+        
         foreach(var savable in savables)
         {
-            var containerElement = (XmlElement)containerElements[i++];
+            var containerElement = containerElements[savable.ToString()];
 
             XmlSavableStore store = new XmlSavableStore(doc, containerElement);
             savable.OnLoad(store);
