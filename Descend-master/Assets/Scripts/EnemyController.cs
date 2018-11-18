@@ -47,11 +47,11 @@ public class EnemyController : MonoBehaviour {
             if(rb2d.velocity.x > 0)
             {
                 facingRight = true;
-                transform.localScale = new Vector3(1, 1, 1);
+                //transform.localScale = new Vector3(1, 1, 1);
             } else if(rb2d.velocity.x < 0)
             {
                 facingRight = false;
-                transform.localScale = new Vector3(-1, 1, 1);
+                //transform.localScale = new Vector3(-1, 1, 1);
             }
         }
         else
