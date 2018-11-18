@@ -196,10 +196,12 @@ public class SceneSaver : MonoBehaviour
         
         foreach(var savable in savables)
         {
-            var containerElement = containerElements[savable.ToString()];
-
-            XmlSavableStore store = new XmlSavableStore(doc, containerElement);
-            savable.OnLoad(store);
+            XmlElement containerElement;
+            if(containerElements.TryGetValue(savable.ToString(), out containerElement))
+            {
+                XmlSavableStore store = new XmlSavableStore(doc, containerElement);
+                savable.OnLoad(store);
+            }
         }
 
     }
