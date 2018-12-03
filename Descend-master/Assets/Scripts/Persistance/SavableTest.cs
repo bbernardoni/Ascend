@@ -1,7 +1,7 @@
 using System.Xml;
 using UnityEngine;
 
-public class SavableTest : Savable
+public class SavableTest : MonoBehaviour, ISavable
 {
     private Transform elev;
     private Transform start;
@@ -9,18 +9,13 @@ public class SavableTest : Savable
     private bool up;
 
     public SceneSaver ss;
-
-    public override string ContainerElementTag
-    {
-        get { return "Elevator"; }
-    }
     
-    public override void OnSave(ISavableWriteStore store)
+    public void OnSave(ISavableWriteStore store)
     {
         store.WriteBool("isUp", up);
     }
     
-    public override void OnLoad(ISavableReadStore store)
+    public void OnLoad(ISavableReadStore store)
     {
         up = store.ReadBool("isUp");
     }

@@ -47,11 +47,11 @@ public class EnemyController : MonoBehaviour {
             if(rb2d.velocity.x > 0)
             {
                 facingRight = true;
-                transform.localScale = new Vector3(1, 1, 1);
+                //transform.localScale = new Vector3(1, 1, 1);
             } else if(rb2d.velocity.x < 0)
             {
                 facingRight = false;
-                transform.localScale = new Vector3(-1, 1, 1);
+                //transform.localScale = new Vector3(-1, 1, 1);
             }
         }
         else
@@ -149,7 +149,7 @@ public class EnemyController : MonoBehaviour {
         if(health - f < 0)
         {
             health = 0;
-            die();
+            Kill();
         }
         else
         {
@@ -200,8 +200,8 @@ public class EnemyController : MonoBehaviour {
         }
     }
 
-    void die()
+    public void Kill()
     {
-
+        Destroy(gameObject); //Add death animation later
     }
 }
