@@ -817,7 +817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d0961ba9d1d9194881fde3d8afe159a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedObj: {fileID: 0}
+  selectedObj: {fileID: 114901860834665910}
 --- !u!114 &114270451684687938
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -897,7 +897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d0961ba9d1d9194881fde3d8afe159a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedObj: {fileID: 0}
+  selectedObj: {fileID: 114147072006020176}
 --- !u!114 &114328621991090706
 MonoBehaviour:
   m_ObjectHideFlags: 1
