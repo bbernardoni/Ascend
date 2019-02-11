@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxScript : Interactable {
+public class BoxScript : Interactable, ISavable {
     
     private Rigidbody2D rb2d;
     private AudioSource boxAudio;
@@ -19,7 +19,7 @@ public class BoxScript : Interactable {
             joint.breakTorque = 900;
         } else {
             rb2d.bodyType = RigidbodyType2D.Kinematic;
-            rb2d.velocity = new Vector2(0.0f, 0.0f);
+            rb2d.velocity = Vector2.zero;
             Destroy(GetComponent<FixedJoint2D>());
         }
         rb2d.freezeRotation = !inUse;
@@ -41,10 +41,9 @@ public class BoxScript : Interactable {
     
     protected override void UpdateInteractable() {
         // audio stuff
-		if(rb2d.velocity.magnitude > 0.1) {
+		if(Mathf.Abs(rb2d.velocity.x) > 0.1) {
             if(!boxAudio.isPlaying)
                 boxAudio.Play();
-            boxAudio.pitch = rb2d.velocity.magnitude;
         } else {
             boxAudio.Stop();
         }
@@ -53,5 +52,21 @@ public class BoxScript : Interactable {
         if(!inUse && rb2d.velocity.magnitude == 0.0f)
             rb2d.bodyType = RigidbodyType2D.Kinematic;
     }
-    
+
+    public void OnSave(ISavableWriteStore store)
+    {
+        store.WriteVector3("pos", rb2d.position);
+    }
+
+    public void OnLoad(ISavableReadStore store)
+    {
+        inUse = false;
+        rb2d.position = store.ReadVector3("pos");
+        rb2d.velocity = new Vector2(0, 0.001f);
+        rb2d.bodyType = RigidbodyType2D.Dynamic;
+        rb2d.freezeRotation = true;
+        FixedJoint2D joint = GetComponent<FixedJoint2D>();
+        if(joint)
+            Destroy(joint);
+    }
 }

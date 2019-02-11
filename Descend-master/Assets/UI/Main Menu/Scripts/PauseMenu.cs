@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour {
 
     public static bool isPaused = false;
-    public GameObject menu; //reference to menu
+    public GameObject pauseMenu; //reference to menu
     public GameObject settingsMenu; //reference to settings
     
     [SerializeField]
@@ -14,12 +15,15 @@ public class PauseMenu : MonoBehaviour {
     
     [SerializeField]
     private string _firstLevelName;
-	
+
+    public Slider volSlider;
+    public AudioSource bgMusic;
+
     //resume game function
     public void Resume()
     {
         //bring down menu
-        menu.SetActive(false);
+        pauseMenu.SetActive(false);
         //time back to normal
         Time.timeScale = 1f;
         isPaused = false;
@@ -29,7 +33,7 @@ public class PauseMenu : MonoBehaviour {
     void Pause()
     {
         //bring up menu
-        menu.SetActive(true);
+        pauseMenu.SetActive(true);
         //freeze time
         Time.timeScale = 0f;
         isPaused = true;
@@ -45,19 +49,34 @@ public class PauseMenu : MonoBehaviour {
 #endif
     }
 
+    public void EnterSettings()
+    {
+        pauseMenu.SetActive(false);
+        settingsMenu.SetActive(true);
+    }
+
+    public void ExitSettings()
+    {
+        pauseMenu.SetActive(true);
+        settingsMenu.SetActive(false);
+    }
+
     // Update is called once per frame
     void Update () {
 		if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused && !settingsMenu.activeSelf)
-            {
-                Resume();
-            } else
-            {
+            if (!isPaused) {
                 Pause();
+            } else if(settingsMenu.activeSelf) {
+                ExitSettings();
+            } else {
+                Resume();
             }
         }
-	}
+
+        //change when slider changed
+        bgMusic.volume = volSlider.value;
+    }
 
     public void BeginNewGame() 
     {

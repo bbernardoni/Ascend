@@ -340,7 +340,9 @@ MonoBehaviour:
   groundCheck: {fileID: 4255648215765464}
   grounded: 0
   anim: {fileID: 95880589199466036}
-  alive: 1
+  deathTime: 2
+  fader: {fileID: 0}
+  sceneSaver: {fileID: 0}
   onLadder: 0
   climbSpeed: 4
 --- !u!124 &124428507700366262

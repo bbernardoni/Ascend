@@ -10,6 +10,8 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -38,6 +40,11 @@ public class SceneSaver : MonoBehaviour
         get { return "savables"; }
     }
 
+    private static string SavablesContainerElementTag
+    {
+        get { return "container"; }
+    }
+
     /// <summary>
     /// Path to the folder where UserData folder is at.
     /// </summary>
@@ -54,12 +61,12 @@ public class SceneSaver : MonoBehaviour
     public static string NameofUserDataFolder
     {
         get {
-            return "User Data";
+            return "UserData";
         }
     }
 
     private string sceneName;
-    private Savable[] savables;
+    private ISavable[] savables;
 
     private string scenePath = null;
 
@@ -126,8 +133,8 @@ public class SceneSaver : MonoBehaviour
     /// </param>
     public void Save(bool blocking = true)
     {
-        savables = FindObjectsOfType<Savable>();
-        if(savables.Length == 0) return;
+        var savables = FindObjectsOfType<MonoBehaviour>().OfType<ISavable>();
+        if(!savables.Any()) return;
 
         EnsureExistance(scenePath);
 
@@ -142,7 +149,13 @@ public class SceneSaver : MonoBehaviour
 
         foreach(var savable in savables)
         {
-            XmlElement containerElement = doc.CreateElement(savable.ContainerElementTag);
+            XmlElement containerElement = doc.CreateElement(SceneSaver.SavablesContainerElementTag);
+            var attributes = containerElement.Attributes;
+
+            var containerNameAttr = doc.CreateAttribute("name");
+            containerNameAttr.InnerText = savable.ToString();
+
+            attributes.Append(containerNameAttr);
             doc.DocumentElement.AppendChild(containerElement);
 
             XmlSavableStore store = new XmlSavableStore(doc, containerElement);
@@ -162,8 +175,8 @@ public class SceneSaver : MonoBehaviour
     /// </summary>
     public void Load()
     {
-        savables = FindObjectsOfType<Savable>();
-        if(savables.Length == 0) return;
+        var savables = FindObjectsOfType<MonoBehaviour>().OfType<ISavable>();
+        if(!savables.Any()) return;
 
         EnsureExistance(scenePath);
 
@@ -173,15 +186,22 @@ public class SceneSaver : MonoBehaviour
 
         XmlDocument doc = new XmlDocument();
         doc.Load(filePath);
-        XmlNodeList containerElements = doc.DocumentElement.ChildNodes;
 
-        for(var i = 0; i < containerElements.Count; i++)
+        Dictionary<string, XmlElement> containerElements = new Dictionary<string, XmlElement>();
+        foreach(XmlElement container in doc.DocumentElement.ChildNodes)
         {
-            var savable = savables[i];
-            var containerElement = (XmlElement)containerElements[i];
-
-            XmlSavableStore store = new XmlSavableStore(doc, containerElement);
-            savable.OnLoad(store);
+            string name = container.Attributes[0].InnerText;
+            containerElements.Add(name, container);
+        }
+        
+        foreach(var savable in savables)
+        {
+            XmlElement containerElement;
+            if(containerElements.TryGetValue(savable.ToString(), out containerElement))
+            {
+                XmlSavableStore store = new XmlSavableStore(doc, containerElement);
+                savable.OnLoad(store);
+            }
         }
 
     }
