@@ -33,5 +33,3 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-Assets/UserData/
-Assets/UserData.meta
