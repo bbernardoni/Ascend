@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SelectInput : MonoBehaviour {
-
-    public EventSystem eventSys;
-    public GameObject selectedObj;
+    
+    public Selectable selectedObj;
 
     private bool selected;
 
@@ -19,10 +19,10 @@ public class SelectInput : MonoBehaviour {
 	void Update () {
 		if (Input.GetAxisRaw("Vertical") != 0 && !selected)
         {
-            eventSys.SetSelectedGameObject(selectedObj);
+            selectedObj.Select();
             selected = true;
         }
-	}
+    }
 
     private void OnDisable()
     {
