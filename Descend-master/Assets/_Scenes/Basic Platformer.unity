@@ -1274,6 +1274,12 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &455753355 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114144291350824852, guid: 1c1a21b322d074c5ebe3878f87f90d9c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1824770419}
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &542411930
 GameObject:
   m_ObjectHideFlags: 0
@@ -1622,6 +1628,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 114636455868082282, guid: c100d852d3aee47a18015174b0ec8a53,
+        type: 2}
+      propertyPath: fader
+      value: 
+      objectReference: {fileID: 455753355}
+    - target: {fileID: 114636455868082282, guid: c100d852d3aee47a18015174b0ec8a53,
+        type: 2}
+      propertyPath: sceneSaver
+      value: 
+      objectReference: {fileID: 1351469114}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c100d852d3aee47a18015174b0ec8a53, type: 2}
   m_IsPrefabAsset: 0
