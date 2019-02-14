@@ -8,7 +8,6 @@ TagManager:
   - Ladder
   - Interactable
   - Enemy
-  - Lamp
   - Oil Barrel
   layers:
   - Default
@@ -44,6 +43,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2815827067
+    locked: 0
+  - name: Platforms
+    uniqueID: 238104605
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Interactables
+    uniqueID: 3695920247
+    locked: 0
+  - name: Player
+    uniqueID: 2788640099
     locked: 0

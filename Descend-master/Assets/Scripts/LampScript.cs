@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class LampScript : Interactable
 {
+    public float timeToEmpty;
+
+    private float maxIntensity;
     
     private PlayerController player;
     private bool overBarrel;
@@ -51,6 +54,8 @@ public class LampScript : Interactable
         player = FindObjectOfType<PlayerController>();
         overBarrel = false;
         rb = GetComponent<Rigidbody2D>();
+
+        maxIntensity = gameObject.GetComponentInChildren<Light>().intensity;
     }
 
     protected override void UpdateInteractable()
@@ -61,10 +66,10 @@ public class LampScript : Interactable
         Light lt = gameObject.GetComponentInChildren<Light>();
         if(Input.GetButtonDown("Refill") && inUse && overBarrel)
         {
-            lt.intensity = 1.5f;
+            lt.intensity = maxIntensity;
             audioFill.Play();
         }
-        lt.intensity = lt.intensity - 0.001f;
+        lt.intensity -= maxIntensity * (Time.deltaTime / timeToEmpty);
     }
 
     void ThrowUsingQ(bool facingRight)
