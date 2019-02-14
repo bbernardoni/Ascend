@@ -6,7 +6,7 @@ public class TrapScript : MonoBehaviour
 {
     bool activated;
     public Animator anim;
-    public AudioSource audio;
+    public AudioSource trapAudio;
 
     // Use this for initialization
     void Start()
@@ -30,7 +30,7 @@ public class TrapScript : MonoBehaviour
                     enemy.Kill();
                 }
                 anim.Play("trap_close");
-                audio.Play();
+                trapAudio.Play();
             }
         }
     }

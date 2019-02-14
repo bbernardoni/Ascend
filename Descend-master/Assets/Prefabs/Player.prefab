@@ -53,7 +53,6 @@ GameObject:
   - component: {fileID: 50691587213505282}
   - component: {fileID: 61682381767785180}
   - component: {fileID: 251179280477828360}
-  - component: {fileID: 114098891826319070}
   - component: {fileID: 114636455868082282}
   - component: {fileID: 70390790868950620}
   - component: {fileID: 95880589199466036}
@@ -308,18 +307,6 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &114098891826319070
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1459277135638354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 378c811e4f3d6e54b9954342ca30ce93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enabled: 1
 --- !u!114 &114636455868082282
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -331,9 +318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7475679c60b5794fb6d992108d932a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  facingRight: 1
-  jump: 0
-  holdingBox: 0
   moveForce: 800
   maxSpeed: 10
   jumpForce: 4000
