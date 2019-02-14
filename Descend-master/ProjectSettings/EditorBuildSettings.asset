@@ -4,4 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_Scenes/Basic Platformer.unity
+    guid: 60393bb255a8f4ab4a7732ba8a7db2ce
+  m_configObjects: {}
