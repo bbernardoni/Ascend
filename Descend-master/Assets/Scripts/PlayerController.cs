@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour, ISavable {
 
     [HideInInspector] public bool facingRight = true;
     [HideInInspector] public bool jump = false;
@@ -15,8 +16,13 @@ public class PlayerController : MonoBehaviour {
     public bool grounded = false;
     public Animator anim;
     
-    //player dead
-    public bool alive = true;
+    //player death
+    private bool dying = false;
+    public float deathTime = 2.0f;
+    public Image fader;
+    private float deathTimer;
+    public SceneSaver sceneSaver;
+
     //ladder
     public bool onLadder;
     public float climbSpeed;
@@ -33,7 +39,18 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(!alive) return;
+        if(dying)
+        {
+            deathTimer -= Time.deltaTime;
+            fader.color = new Color(0, 0, 0, 1-deathTimer/deathTime);
+            if(deathTimer <= 0.0f)
+            {
+                sceneSaver.Load();
+                fader.color = new Color(0, 0, 0, 0);
+            }
+            return;
+        }
+
         grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
         //grounded = true;
         if (Input.GetButtonDown("Jump") && grounded && !holdingBox)
@@ -44,25 +61,27 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D Other)
     {
-        if(!alive) return;
+        if(dying) return;
         if(Other.gameObject.CompareTag("Interactable"))
         {
+            Debug.Log("Player Trigger Enter: "+Other.name);
             Other.GetComponent<Interactable>().inTrigger = true;
         }
     }
 
     void OnTriggerExit2D(Collider2D Other)
     {
-        if(!alive) return;
+        if(dying) return;
         if(Other.gameObject.CompareTag("Interactable") && !Other.transform.IsChildOf(transform))
         {
+            Debug.Log("Player Trigger Exit: "+Other.name);
             Other.GetComponent<Interactable>().inTrigger = false;
         }
     }
 
     void OnTriggerStay2D(Collider2D Other)
     {
-        if(!alive) return;
+        if(dying) return;
         if(Other.gameObject.CompareTag("Enemy") && Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("STUN!");
@@ -72,7 +91,12 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if(!alive) return;
+        if(dying)
+        {
+            rb2d.velocity = Vector2.zero;
+            return;
+        }
+
         //handle movement
         float hMove = Input.GetAxis("Horizontal");
         float curMaxSpeed = maxSpeed;
@@ -126,12 +150,33 @@ public class PlayerController : MonoBehaviour {
 
     void Flip()
     {
-        if(!alive) return;
         facingRight = !facingRight;
         //Vector3 theScale = transform.localScale;
         //theScale.x *= -1;
         //transform.localScale = theScale;
     }
 
-    
+    public void Kill()
+    {
+        dying = true;
+        deathTimer = deathTime;
+    }
+
+    public void OnSave(ISavableWriteStore store)
+    {
+        store.WriteVector3("pos", rb2d.position);
+    }
+
+    public void OnLoad(ISavableReadStore store)
+    {
+        facingRight = true;
+        jump = false;
+        holdingBox = false;
+
+        dying = false;
+        onLadder = false;
+
+        rb2d.position = store.ReadVector3("pos");
+        rb2d.velocity = Vector2.zero;
+    }
 }
