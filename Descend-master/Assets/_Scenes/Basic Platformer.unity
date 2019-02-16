@@ -403,9 +403,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inTrigger: 0
-  elevator: {fileID: 447329121}
+  elevator: {fileID: 447329124}
   elevatorDistance: 13.3
-  elevatorRate: -0.1
+  elevatorRate: -5
 --- !u!1001 &171668535
 Prefab:
   m_ObjectHideFlags: 0
@@ -1434,7 +1434,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 238104605
   m_SortingLayer: -1
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 6966ba0c36c9741a4b21573a86898877, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

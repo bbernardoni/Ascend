@@ -47,7 +47,9 @@ public class BoxScript : Interactable, ISavable {
         } else {
             boxAudio.Stop();
         }
+    }
 
+    void FixedUpdate() {
         // freeze box when it hits the ground
         if(!inUse && rb2d.velocity.magnitude == 0.0f)
             rb2d.bodyType = RigidbodyType2D.Kinematic;
