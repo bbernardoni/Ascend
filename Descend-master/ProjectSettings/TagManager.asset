@@ -9,6 +9,7 @@ TagManager:
   - Interactable
   - Enemy
   - Oil Barrel
+  - Trap
   layers:
   - Default
   - TransparentFX
@@ -20,8 +21,8 @@ TagManager:
   - 
   - Ground
   - Player
-  - 
-  - 
+  - Lamp
+  - Enemy
   - 
   - 
   - 

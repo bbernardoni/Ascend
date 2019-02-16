@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4004899882054856}
   - component: {fileID: 108209903671929148}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 61694182138415506}
   - component: {fileID: 50304134765027668}
   - component: {fileID: 82468541412729922}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Lamp
   m_TagString: Interactable
   m_Icon: {fileID: 0}

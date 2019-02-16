@@ -64,8 +64,7 @@ public class SceneSaver : MonoBehaviour
             return "UserData";
         }
     }
-
-    private string sceneName;
+    
     private ISavable[] savables;
 
     private string scenePath = null;
@@ -85,7 +84,7 @@ public class SceneSaver : MonoBehaviour
     void Awake()
     {
         // Get Scene name
-        sceneName = SceneManager.GetActiveScene().name;
+        string sceneName = SceneManager.GetActiveScene().name;
 
         // Make sure "User Data" exists
         string userDataPath = Path.Combine(
@@ -217,7 +216,8 @@ public class SceneSaver : MonoBehaviour
                 SceneSaver.PathToPutUserDataFolder,
                 SceneSaver.NameofUserDataFolder
             );
-
+            
+            string sceneName = SceneManager.GetActiveScene().name;
             scenePath = Path.Combine(scenePath, sceneName);
         }
 
