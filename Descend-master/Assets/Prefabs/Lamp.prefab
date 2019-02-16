@@ -35,8 +35,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4961391833617912}
-  - component: {fileID: 212501281632576748}
   - component: {fileID: 114965022931770594}
+  - component: {fileID: 212501281632576748}
   - component: {fileID: 61694182138415506}
   - component: {fileID: 50304134765027668}
   - component: {fileID: 82468541412729922}
@@ -88,7 +88,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 10
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -225,7 +225,7 @@ Light:
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 5
-  m_Range: 20
+  m_Range: 25
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
@@ -280,7 +280,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ccd5799f5650a7646ba42d509464a730, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

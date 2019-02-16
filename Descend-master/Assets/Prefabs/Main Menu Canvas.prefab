@@ -155,10 +155,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224575373220669030}
+  - component: {fileID: 114304068300898296}
   - component: {fileID: 222149942951536616}
   - component: {fileID: 114068819918323708}
   - component: {fileID: 114328621991090706}
-  - component: {fileID: 114304068300898296}
   m_Layer: 5
   m_Name: Buttons Panel
   m_TagString: Untagged
@@ -279,10 +279,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224802060556463742}
+  - component: {fileID: 114716727393301778}
   - component: {fileID: 223147699835791426}
   - component: {fileID: 114480112668647792}
   - component: {fileID: 114852322877811046}
-  - component: {fileID: 114716727393301778}
   m_Layer: 5
   m_Name: Main Menu Canvas
   m_TagString: Untagged
@@ -298,9 +298,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224349808980529676}
+  - component: {fileID: 114254811155035646}
   - component: {fileID: 222715664356912746}
   - component: {fileID: 114062994750083660}
-  - component: {fileID: 114254811155035646}
   m_Layer: 5
   m_Name: Settings Panel
   m_TagString: Untagged

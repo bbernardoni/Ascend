@@ -9,11 +9,6 @@ public class ElevatorButton : Interactable {
     public float elevatorDistance;
     public float elevatorRate;
 
-    public ElevatorButton()
-    {
-        inUse = false;
-    }
-
     override public void function()
     {
         //if (!inUse)

@@ -9,7 +9,8 @@ public class LampScript : Interactable
     private Rigidbody2D rb;
     private PlayerController player;
     private Light lampLight;
-    private float maxIntensity;
+    private float maxRange;
+    private float minRange;
 
     private Vector3 start;
     private Vector3 end, force;
@@ -21,14 +22,15 @@ public class LampScript : Interactable
         rb = GetComponent<Rigidbody2D>();
         player = FindObjectOfType<PlayerController>();
         lampLight = gameObject.GetComponentInChildren<Light>();
-        maxIntensity = lampLight.intensity;
+        maxRange = lampLight.range;
+        minRange = Mathf.Abs(lampLight.transform.position.z);
     }
 
     public override void function(){
         if(inUse) {
             if(player.GetOverBarrel()) {
                 // refill lamp
-                lampLight.intensity = maxIntensity;
+                lampLight.range = maxRange;
                 audioFill.Play();
             }
             else if (player.GetOverInteractables() == 1){
@@ -54,7 +56,8 @@ public class LampScript : Interactable
         ThrowUsingMouse();
         ThrowUsingQ(player.GetFacingRight());
 
-        lampLight.intensity -= maxIntensity * (Time.deltaTime / timeToEmpty);
+        if(lampLight.range > minRange)
+            lampLight.range -= (maxRange - minRange) * (Time.deltaTime / timeToEmpty);
     }
 
     void ThrowUsingQ(bool facingRight){

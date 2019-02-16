@@ -50,10 +50,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4401571986462264}
+  - component: {fileID: 114636455868082282}
   - component: {fileID: 50691587213505282}
   - component: {fileID: 61682381767785180}
   - component: {fileID: 251179280477828360}
-  - component: {fileID: 114636455868082282}
   - component: {fileID: 70390790868950620}
   - component: {fileID: 95880589199466036}
   - component: {fileID: 212077207778378306}
@@ -322,7 +322,6 @@ MonoBehaviour:
   maxSpeed: 10
   jumpForce: 4000
   groundCheck: {fileID: 4255648215765464}
-  grounded: 0
   anim: {fileID: 95880589199466036}
   deathTime: 2
   fader: {fileID: 0}
@@ -351,7 +350,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ccd5799f5650a7646ba42d509464a730, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -372,7 +371,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: b4b94fa5286f053498c94230429f8b41, type: 3}
-  m_Color: {r: 0.6972318, g: 0.7507457, b: 0.7647059, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

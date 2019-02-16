@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour, ISavable {
         if(Other.CompareTag("Enemy") && Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("STUN!");
-            Other.GetComponent<EnemyController>().stun();
+            Other.GetComponent<EnemyController>().SetStunned(true);
         }
     }
 
@@ -206,6 +206,8 @@ public class PlayerController : MonoBehaviour, ISavable {
         facingRight = true;
         jump = false;
         holdingBox = false;
+        overBarrel = false;
+        // overInteractables
 
         dying = false;
         onLadder = false;
