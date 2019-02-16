@@ -5,28 +5,25 @@ using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour {
 
-    public bool facingRight = true;
-    public float moveForce = 600f;
-    public float maxSpeed = 5f;
-    public float health = 100;
-    public float sightDistance = 100f;
-    public float stunDuration = 3f;
+    private float currentMoveForce = 0;
+    private bool facingRight = true;
+    public float moveForce;
+    public float maxSpeed;
+    public float health;
+    public float sightDistance;
+    public float stunDuration;
     public GameObject eye;
-    public GameObject player;
+    private GameObject player;
     public GameObject stunAnimation;
-    public bool stunned = false;
+    private bool stunned = false;
 
     public Rigidbody2D rb2d;
     public Slider healthSlider;
 
-    private float moveTime = 0;
-    private float leftRight = 0;
-    private float lastMove = 0;
-
-    private float stunTime = 0;
-
-    private bool idleMoving = false;
-    public bool alerted = false;
+    private float moveTime = -1;
+    private float stunTime = -1;
+    
+    private bool alerted = false;
 
     // Use this for initialization
     void Start () {
@@ -34,114 +31,72 @@ public class EnemyController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        stunCheck();
-        if (!stunned)
-        {
-            playerCheck();
-            healthSlider.value = health;
-            if (!idleMoving && !alerted)
-            {
-                StartCoroutine(idleMove());
-                idleMoving = true;
+        healthSlider.value = health;
+	}
+
+    void FixedUpdate() {
+        // is stunned period over?
+        if(stunned && stunTime < 0)
+            SetStunned(false);
+        else
+            stunTime -= Time.fixedDeltaTime;
+
+        // calculate current move force
+        if(!stunned) {
+            // Check for player
+            Vector2 direction = (facingRight ? Vector2.right : Vector2.left);
+            Debug.DrawRay(eye.transform.position, direction * sightDistance);
+            RaycastHit2D hit = Physics2D.Raycast(eye.transform.position, direction, sightDistance, 1 << LayerMask.NameToLayer("Player"));
+            if(hit) {
+                alerted = true;
+                player = hit.collider.gameObject;
             }
-            if(rb2d.velocity.x > 0)
-            {
+
+            if(alerted) {
+                // Chase player
+                Vector3 toPlayer = player.transform.position - transform.position;
+
+                if(Mathf.Abs(toPlayer.x) > sightDistance)
+                    alerted = false;
+
+                if(Mathf.Abs(toPlayer.x) < 0.1)
+                    currentMoveForce = 0;
+                else if(toPlayer.x < 0)
+                    currentMoveForce = -moveForce;
+                else
+                    currentMoveForce = moveForce;
+            }
+            else {
+                // Idle movement
+                if(moveTime < 0) {
+                    // new movement
+                    moveTime = Random.Range(1.0f, 2.0f);
+                    currentMoveForce = Random.Range(-1, 2) * moveForce;
+                }
+
+                moveTime -= Time.deltaTime;
+            }
+
+            // move
+            rb2d.AddForce(Vector2.right * currentMoveForce);
+
+            // clamp to max speed
+            if(Mathf.Abs(rb2d.velocity.x) > maxSpeed)
+                rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * maxSpeed, rb2d.velocity.y);
+
+            // set facing right
+            if(rb2d.velocity.x > 0.01f) {
                 facingRight = true;
                 //transform.localScale = new Vector3(1, 1, 1);
-            } else if(rb2d.velocity.x < 0)
-            {
+            }
+            else if(rb2d.velocity.x < -0.01f) {
                 facingRight = false;
                 //transform.localScale = new Vector3(-1, 1, 1);
             }
         }
-        else
-        {
+        else {
             rb2d.velocity = Vector2.zero;
         }
-	}
-
-    void FixedUpdate()
-    {
-        if (alerted && !stunned)
-        {
-            Chase(player);
-        }
-    }
-
-    void playerCheck()
-    {
-        if (facingRight)
-        {
-            Debug.DrawRay(eye.transform.position, Vector3.right * sightDistance);
-            RaycastHit2D hit = Physics2D.Raycast(eye.transform.position, Vector3.right, sightDistance, 1 << LayerMask.NameToLayer("Player"));
-            if (hit)
-            {
-                Debug.Log("Ray hit!");
-                alerted = true;
-                player = hit.collider.gameObject;
-            } else
-            {
-                Debug.Log("Ray miss.");
-            }
-        }
-        else
-        {
-            Debug.DrawRay(eye.transform.position, Vector3.left * sightDistance);
-            RaycastHit2D hit = Physics2D.Raycast(eye.transform.position, Vector3.left, sightDistance, 1 << LayerMask.NameToLayer("Player"));
-            if (hit)
-            {
-                Debug.Log("Ray hit!");
-                alerted = true;
-                player = hit.collider.gameObject;
-            }
-            else
-            {
-                Debug.Log("Ray miss.");
-            }
-        }
-    }
-
-    void Chase(GameObject player)
-    {
-        Vector3 toPlayer = player.transform.position - transform.position;
-        float direction = 0;
-        if(Mathf.Abs(toPlayer.x) < 0.1)
-        {
-            return;
-        } else if(Mathf.Abs(toPlayer.x) > sightDistance){
-            alerted = false;
-            return;
-        }
-        if(toPlayer.x < 0)
-        {
-            direction = -1;
-        }
-        else
-        {
-            direction = 1;
-        }
-        rb2d.velocity = (new Vector2(direction, rb2d.velocity.y) * moveForce / 200);
-        Debug.Log("Chasing... Force = " + (direction*moveForce*0.1f));
-    }
-
-    IEnumerator idleMove()
-    {
-        Debug.Log("idleMoving");
-        lastMove = Time.time;
-        moveTime = Random.Range(1,2);
-        int direction = Random.Range(-1, 2);
-        while(direction == 0)
-        {
-            direction = Random.Range(-1, 2);
-        }
-        Debug.Log(direction);
-        while((Time.time - lastMove) < moveTime)
-        {
-            rb2d.velocity = (new Vector2(direction, rb2d.velocity.y) * (moveForce / Random.Range(100,300)));
-            yield return new WaitForSeconds(0.1f);
-        }
-        yield return new WaitForSeconds(1);
-        idleMoving = false;
     }
 
     void takeDamage(float f)
@@ -157,47 +112,12 @@ public class EnemyController : MonoBehaviour {
         }
     }
 
-    void moveRandom()
-    {
-        if(moveTime <= 0)
-        {
-            moveTime = Random.Range(1,3);
-            leftRight = Random.Range(0,2) - 1;
-            lastMove = Time.time;
-        }
-        if(leftRight > 0)
-        {
-            rb2d.AddForce(Vector2.right * moveForce);
-        }
-        else
-        {
-            rb2d.AddForce(Vector2.left * moveForce);
-        }
+    public void SetStunned(bool isStunned) {
+        stunned = isStunned;
+        stunAnimation.SetActive(stunned);
 
-        moveTime -= Time.time - lastMove;
-        lastMove = Time.time;
-    }
-
-    public void stun()
-    {
-        stunTime = Time.time;
-        stunned = true;
-    }
-
-    void stunCheck()
-    {
-        if (stunned && stunTime + stunDuration < Time.time)
-        {
-            stunned = false;
-        }
-        if (stunned)
-        {
-            stunAnimation.SetActive(true);
-        }
-        else
-        {
-            stunAnimation.SetActive(false);
-        }
+        if(stunned)
+            stunTime = stunDuration;
     }
 
     public void Kill()

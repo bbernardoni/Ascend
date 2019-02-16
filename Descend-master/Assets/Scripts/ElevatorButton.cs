@@ -9,11 +9,6 @@ public class ElevatorButton : Interactable {
     public float elevatorDistance;
     public float elevatorRate;
 
-    public ElevatorButton()
-    {
-        inUse = false;
-    }
-
     override public void function()
     {
         //if (!inUse)
@@ -28,7 +23,7 @@ public class ElevatorButton : Interactable {
         float distance = 0;
         while(distance < elevatorDistance)
         {
-            Debug.Log("Moving elevator...");
+            //Debug.Log("Moving elevator...");
             elevator.Translate(Vector2.up * elevatorRate);
             distance += Mathf.Abs(elevatorRate);
             yield return new WaitForSeconds(0.016f);

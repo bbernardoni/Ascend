@@ -27,7 +27,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1168017015256278
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,8 +134,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4689008121790224}
-  - component: {fileID: 212334671659993418}
   - component: {fileID: 114073466242195920}
+  - component: {fileID: 212334671659993418}
   - component: {fileID: 61854485645000518}
   - component: {fileID: 50660666238529780}
   m_Layer: 0
@@ -178,7 +178,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1820598321269878}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 3, z: 0}
+  m_LocalPosition: {x: -4.48, y: -9.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224206173855240294}
@@ -199,9 +199,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 3
-  m_LinearDrag: 1
+  m_LinearDrag: 4
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 10
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -277,19 +277,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bc3651c6d92a743b9624897f4ea92c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  facingRight: 1
-  moveForce: 1000
+  moveForce: 200
   maxSpeed: 5
-  health: 4
+  health: 7
   sightDistance: 20
   stunDuration: 3
   eye: {fileID: 1336345665788130}
-  player: {fileID: 0}
   stunAnimation: {fileID: 1050230712239754}
-  stunned: 0
   rb2d: {fileID: 50660666238529780}
   healthSlider: {fileID: 114110167804552720}
-  alerted: 0
 --- !u!114 &114085699103172554
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -428,7 +424,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ccd5799f5650a7646ba42d509464a730, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

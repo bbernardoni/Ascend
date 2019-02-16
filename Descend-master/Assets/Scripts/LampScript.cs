@@ -4,71 +4,63 @@ using UnityEngine;
 
 public class LampScript : Interactable
 {
+    public float timeToEmpty;
     
-    private PlayerController player;
-    private bool overBarrel;
-
     private Rigidbody2D rb;
+    private PlayerController player;
+    private Light lampLight;
+    private float maxRange;
+    private float minRange;
+
     private Vector3 start;
     private Vector3 end, force;
     private float startTime, endTime, deltaTime;
 
     public AudioSource audioFill;
 
-    public override void function()
-    {
-        // toggle holding state
-        inUse = !inUse;
-        rb.isKinematic = inUse;
-        if(inUse)
-        {
+    void Start() {
+        rb = GetComponent<Rigidbody2D>();
+        player = FindObjectOfType<PlayerController>();
+        lampLight = gameObject.GetComponentInChildren<Light>();
+        maxRange = lampLight.range;
+        minRange = Mathf.Abs(lampLight.transform.position.z);
+    }
+
+    public override void function(){
+        if(inUse) {
+            if(player.GetOverBarrel()) {
+                // refill lamp
+                lampLight.range = maxRange;
+                audioFill.Play();
+            }
+            else if (player.GetOverInteractables() == 1){
+                // set down lamp
+                inUse = false;
+                rb.isKinematic = false;
+
+                rb.velocity = new Vector2(0.0f, 0.0f);
+                transform.parent = null;
+            }
+        }
+        else {
+            // pick up lamp
+            inUse = true;
+            rb.isKinematic = true;
+
             transform.parent = player.transform;
             transform.position = player.transform.position;
-        } else
-        {
-            rb.velocity = new Vector2(0.0f, 0.0f);
-            transform.parent = null;
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.CompareTag("Oil Barrel"))
-        {
-            overBarrel = true;
-        }
-    }
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if(other.CompareTag("Oil Barrel"))
-        {
-            overBarrel = false;
-        }
+    protected override void UpdateInteractable(){
+        ThrowUsingMouse();
+        ThrowUsingQ(player.GetFacingRight());
+
+        if(lampLight.range > minRange)
+            lampLight.range -= (maxRange - minRange) * (Time.deltaTime / timeToEmpty);
     }
 
-    void Start()
-    {
-        player = FindObjectOfType<PlayerController>();
-        overBarrel = false;
-        rb = GetComponent<Rigidbody2D>();
-    }
-
-    protected override void UpdateInteractable()
-    {
-        ThrowUsingMouse(player.facingRight);
-        ThrowUsingQ(player.facingRight);
-
-        Light lt = gameObject.GetComponentInChildren<Light>();
-        if(Input.GetButtonDown("Refill") && inUse && overBarrel)
-        {
-            lt.intensity = 1.5f;
-            audioFill.Play();
-        }
-        lt.intensity = lt.intensity - 0.001f;
-    }
-
-    void ThrowUsingQ(bool facingRight)
-    {
+    void ThrowUsingQ(bool facingRight){
         if(Input.GetKeyDown(KeyCode.Q)) startTime = Time.time;
         else if(Input.GetKeyUp(KeyCode.Q))
         {
@@ -85,8 +77,7 @@ public class LampScript : Interactable
     }
 
 
-    void ThrowUsingMouse(bool facingRight)
-    {
+    void ThrowUsingMouse(){
         if(Input.GetMouseButtonDown(0)) start = Input.mousePosition;
         else if(Input.GetMouseButtonUp(0))
         {
@@ -96,7 +87,7 @@ public class LampScript : Interactable
         if(Input.GetMouseButtonUp(0) && inUse)
         {
             rb.isKinematic = false;
-            rb.velocity = new Vector2(-force[0]/10, -force[1]/10);
+            rb.velocity = new Vector2(-force.x/10, -force.y/10);
             transform.parent = null;
             inUse = false;
         }

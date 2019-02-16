@@ -4,21 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour, ISavable {
-
-    [HideInInspector] public bool facingRight = true;
-    [HideInInspector] public bool jump = false;
-    [HideInInspector] public bool holdingBox = false;
-
-    public float moveForce = 365f;
-    public float maxSpeed = 5f;
-    public float jumpForce = 1000f;
+    // movement 
+    public float moveForce;
+    public float maxSpeed;
+    public float jumpForce;
     public Transform groundCheck;
-    public bool grounded = false;
     public Animator anim;
-    
+
+    private bool grounded = false;
+    private bool facingRight = true;
+    private bool jump = false;
+
+    // intactables
+    private bool holdingBox = false;
+    private bool overBarrel = false;
+    private int overInteractables = 0;
+
     //player death
     private bool dying = false;
-    public float deathTime = 2.0f;
+    public float deathTime;
     public Image fader;
     private float deathTimer;
     public SceneSaver sceneSaver;
@@ -62,31 +66,45 @@ public class PlayerController : MonoBehaviour, ISavable {
     void OnTriggerEnter2D(Collider2D Other)
     {
         if(dying) return;
-        if(Other.gameObject.CompareTag("Interactable"))
+
+        if(Other.CompareTag("Oil Barrel"))
+            overBarrel = true;
+
+        if(Other.CompareTag("Interactable"))
         {
-            Debug.Log("Player Trigger Enter: "+Other.name);
+            //Debug.Log("Player Trigger Enter: "+Other.name);
             Other.GetComponent<Interactable>().inTrigger = true;
+            overInteractables++;
         }
     }
 
     void OnTriggerExit2D(Collider2D Other)
     {
         if(dying) return;
-        if(Other.gameObject.CompareTag("Interactable") && !Other.transform.IsChildOf(transform))
+
+        if(Other.CompareTag("Oil Barrel"))
+            overBarrel = false;
+
+        if(Other.CompareTag("Interactable") && !Other.transform.IsChildOf(transform))
         {
-            Debug.Log("Player Trigger Exit: "+Other.name);
+            //Debug.Log("Player Trigger Exit: "+Other.name);
             Other.GetComponent<Interactable>().inTrigger = false;
+            overInteractables--;
         }
     }
 
     void OnTriggerStay2D(Collider2D Other)
     {
         if(dying) return;
-        if(Other.gameObject.CompareTag("Enemy") && Input.GetKeyDown(KeyCode.E))
+        if(Other.CompareTag("Enemy") && Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("STUN!");
-            Other.GetComponent<EnemyController>().stun();
+            Other.GetComponent<EnemyController>().SetStunned(true);
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D coll) {
+        //Debug.Log("Collided with " + coll.gameObject.ToString());
     }
 
     void FixedUpdate()
@@ -162,6 +180,22 @@ public class PlayerController : MonoBehaviour, ISavable {
         deathTimer = deathTime;
     }
 
+    public void SetHoldingBox(bool holdingBox) {
+        this.holdingBox = holdingBox;
+    }
+
+    public bool GetOverBarrel() {
+        return overBarrel;
+    }
+
+    public int GetOverInteractables() {
+        return overInteractables;
+    }
+
+    public bool GetFacingRight() {
+        return facingRight;
+    }
+
     public void OnSave(ISavableWriteStore store)
     {
         store.WriteVector3("pos", rb2d.position);
@@ -172,6 +206,8 @@ public class PlayerController : MonoBehaviour, ISavable {
         facingRight = true;
         jump = false;
         holdingBox = false;
+        overBarrel = false;
+        // overInteractables
 
         dying = false;
         onLadder = false;

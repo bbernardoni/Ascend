@@ -23,13 +23,13 @@ public class BoxScript : Interactable, ISavable {
             Destroy(GetComponent<FixedJoint2D>());
         }
         rb2d.freezeRotation = !inUse;
-        player.holdingBox = inUse;
+        player.SetHoldingBox(inUse);
     }
 
     void OnJointBreak2D(Joint2D brokenJoint){
         rb2d.freezeRotation = true;
         inUse = false;
-        player.holdingBox = false;
+        player.SetHoldingBox(false);
         //rb2d.velocity = new Vector2(0.0f, rb2d.velocity.y);
     }
     

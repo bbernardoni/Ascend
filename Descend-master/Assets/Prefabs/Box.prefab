@@ -35,11 +35,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4376432591917978}
+  - component: {fileID: 114974221900562126}
   - component: {fileID: 212071344085635480}
   - component: {fileID: 50921896857143744}
   - component: {fileID: 68567839464186418}
   - component: {fileID: 82895388888162806}
-  - component: {fileID: 114974221900562126}
   m_Layer: 8
   m_Name: Box
   m_TagString: Interactable
@@ -53,8 +53,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1618068894322620}
-  m_LocalRotation: {x: 0, y: 0, z: -1.1368684e-13, w: 1}
-  m_LocalPosition: {x: 4.5, y: 2.4, z: 10}
+  m_LocalRotation: {x: -0, y: -0, z: -1.1368684e-13, w: 1}
+  m_LocalPosition: {x: -13.05, y: -9.3, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4779363821977074}
@@ -259,7 +259,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ccd5799f5650a7646ba42d509464a730, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -276,8 +276,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -599047049
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 92514c69061dc524cb9e2e1aafe2f431, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
