@@ -53,18 +53,20 @@ public class LampScript : Interactable
     }
 
     protected override void UpdateInteractable(){
-        ThrowUsingMouse();
-        ThrowUsingQ(player.GetFacingRight());
-
         if(lampLight.range > minRange)
             lampLight.range -= (maxRange - minRange) * (Time.deltaTime / timeToEmpty);
     }
 
+    void FixedUpdate() {
+        ThrowUsingMouse();
+        ThrowUsingQ(player.GetFacingRight());
+    }
+
     void ThrowUsingQ(bool facingRight){
-        if(Input.GetKeyDown(KeyCode.Q)) startTime = Time.time;
+        if(Input.GetKeyDown(KeyCode.Q)) startTime = Time.fixedTime;
         else if(Input.GetKeyUp(KeyCode.Q))
         {
-            endTime = Time.time;
+            endTime = Time.fixedTime;
             deltaTime = (endTime - startTime)*10;
         }
         if(Input.GetKeyUp(KeyCode.Q) && inUse)

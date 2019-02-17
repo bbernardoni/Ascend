@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour, ISavable {
     public SceneSaver sceneSaver;
 
     //ladder
-    public bool onLadder;
+    private bool onLadder;
     public float climbSpeed;
     private float climbVelocity;
     private float gravityStore;
@@ -67,14 +67,19 @@ public class PlayerController : MonoBehaviour, ISavable {
     {
         if(dying) return;
 
-        if(Other.CompareTag("Oil Barrel"))
+        if(Other.CompareTag("Oil Barrel")) {
             overBarrel = true;
-
-        if(Other.CompareTag("Interactable"))
+        }
+        else if(Other.CompareTag("Interactable"))
         {
             //Debug.Log("Player Trigger Enter: "+Other.name);
             Other.GetComponent<Interactable>().inTrigger = true;
             overInteractables++;
+        }
+        else if(Other.CompareTag("Ladder")) {
+            onLadder = true;
+            //set g = 0
+            rb2d.gravityScale = 0f;
         }
     }
 
@@ -82,14 +87,19 @@ public class PlayerController : MonoBehaviour, ISavable {
     {
         if(dying) return;
 
-        if(Other.CompareTag("Oil Barrel"))
+        if(Other.CompareTag("Oil Barrel")) {
             overBarrel = false;
-
-        if(Other.CompareTag("Interactable") && !Other.transform.IsChildOf(transform))
+        }
+        else if(Other.CompareTag("Interactable") && !Other.transform.IsChildOf(transform))
         {
             //Debug.Log("Player Trigger Exit: "+Other.name);
             Other.GetComponent<Interactable>().inTrigger = false;
             overInteractables--;
+        }
+        else if(Other.CompareTag("Ladder")) {
+            onLadder = false;
+            //set g back to original value
+            rb2d.gravityScale = gravityStore;
         }
     }
 
@@ -133,37 +143,27 @@ public class PlayerController : MonoBehaviour, ISavable {
         else if (hMove < 0 && facingRight)
             Flip();
 
-        if (jump)
-        {
-            anim.Play("jump");
-            rb2d.AddForce(new Vector2(0f, jumpForce));
-            jump = false;
-        } else if (!grounded)
-        {
-            anim.Play("jump");
-        }
-        else if (facingRight)
-        {
-            anim.Play("right");
-        } else if (!facingRight)
-        {
-            anim.Play("left");
-        }
-         
-        if (onLadder) {
-            //set g = 0
-            rb2d.gravityScale = 0f;
+        if(onLadder) {
             climbVelocity = climbSpeed*Input.GetAxisRaw("Vertical");
             rb2d.velocity = new Vector2(rb2d.velocity.x, climbVelocity);
 
             anim.Play("climb");
         }
-
-        if (!onLadder) {
-            //set g back to original value
-            rb2d.gravityScale = gravityStore;
+        else if (jump)
+        {
+            anim.Play("jump");
+            rb2d.AddForce(new Vector2(0f, jumpForce));
+            jump = false;
         }
-
+        else if (!grounded){
+            anim.Play("jump");
+        }
+        else if (facingRight){
+            anim.Play("right");
+        }
+        else if (!facingRight){
+            anim.Play("left");
+        }
     }
 
     void Flip()
