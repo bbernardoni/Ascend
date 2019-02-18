@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LampScript : Interactable
+public class LampScript : Interactable, ISavable
 {
     public float timeToEmpty;
     
@@ -53,8 +53,11 @@ public class LampScript : Interactable
     }
 
     protected override void UpdateInteractable(){
-        if(lampLight.range > minRange)
+        if (lampLight.range > minRange) {
             lampLight.range -= (maxRange - minRange) * (Time.deltaTime / timeToEmpty);
+        } else {
+            player.Kill(true);
+        }
     }
 
     void FixedUpdate() {
@@ -93,5 +96,15 @@ public class LampScript : Interactable
             transform.parent = null;
             inUse = false;
         }
+    }
+
+    public void OnSave(ISavableWriteStore store)
+    {
+        store.WriteFloat("range", lampLight.range);
+    }
+
+    public void OnLoad(ISavableReadStore store)
+    {
+        lampLight.range = store.ReadFloat("range");
     }
 }
