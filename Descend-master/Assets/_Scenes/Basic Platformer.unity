@@ -1292,7 +1292,7 @@ SurfaceEffector2D:
   m_UseContactForce: 0
   m_UseFriction: 1
   m_UseBounce: 1
---- !u!1001 &356018704
+--- !u!1001 &447316564
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1331,15 +1331,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 14
       objectReference: {fileID: 0}
-    - target: {fileID: 224224466966743188, guid: 766bdbe7c4a3a904e9b7a9cb497638d4,
+    - target: {fileID: 114073466242195920, guid: 766bdbe7c4a3a904e9b7a9cb497638d4,
         type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224224466966743188, guid: 766bdbe7c4a3a904e9b7a9cb497638d4,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 0
+      propertyPath: stunAnimation
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 766bdbe7c4a3a904e9b7a9cb497638d4, type: 2}
