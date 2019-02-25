@@ -20,8 +20,9 @@ public class PlayerController : MonoBehaviour, ISavable {
     private bool overBarrel = false;
     private int overInteractables = 0;
 
-    //player death
-    private bool dying = false;
+    //player death 
+    //instaDeath is caused by the light; there's no fade-out animation
+    private bool dying = false, instaDeath = false;
     public float deathTime;
     public Image fader;
     private float deathTimer;
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour, ISavable {
 	
 	// Update is called once per frame
 	void Update () {
-        if(dying)
+        if(dying && !instaDeath)
         {
             deathTimer -= Time.deltaTime;
             fader.color = new Color(0, 0, 0, 1-deathTimer/deathTime);
@@ -51,6 +52,10 @@ public class PlayerController : MonoBehaviour, ISavable {
                 sceneSaver.Load();
                 fader.color = new Color(0, 0, 0, 0);
             }
+            return;
+        } else if (dying && instaDeath)
+        { // No fade-out animations for deaths involving the lamp
+            sceneSaver.Load();
             return;
         }
 
@@ -163,10 +168,11 @@ public class PlayerController : MonoBehaviour, ISavable {
         //transform.localScale = theScale;
     }
 
-    public void Kill()
+    public void Kill(bool activateInstaDeath=false)
     {
         dying = true;
         deathTimer = deathTime;
+        instaDeath = activateInstaDeath;
     }
 
     public void SetHoldingBox(bool holdingBox) {
@@ -199,6 +205,7 @@ public class PlayerController : MonoBehaviour, ISavable {
         overInteractables = 0;
 
         dying = false;
+        instaDeath = false;
         onLadder = false;
 
         rb2d.position = store.ReadVector3("pos");
