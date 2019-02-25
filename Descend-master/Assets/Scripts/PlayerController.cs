@@ -71,11 +71,9 @@ public class PlayerController : MonoBehaviour, ISavable {
         } else if (Input.GetKey(KeyCode.LeftShift) && grounded && !holdingBox)
         { // As of now, player cannot hold box and careful walk
             carefulWalking = true;
-            // Debug.Log("*Pink Panther Theme*");
         } else if (carefulWalking)
         {
             carefulWalking = false;
-            // Debug.Log("*Jazz Music Stops*");
         }
     }
 
@@ -148,16 +146,11 @@ public class PlayerController : MonoBehaviour, ISavable {
         if(holdingBox)
             curMaxSpeed /= 2.0f;
 
+        if (carefulWalking)
+            curMaxSpeed *= carefulWalkSpeedFactor;
+
         if (hMove * rb2d.velocity.x < curMaxSpeed)
-        {
-            if (carefulWalking)
-            {
-                rb2d.AddForce(Vector2.right * hMove * moveForce * carefulWalkSpeedFactor);
-            } else
-            {
-                rb2d.AddForce(Vector2.right * hMove * moveForce);
-            }
-        }
+            rb2d.AddForce(Vector2.right * hMove * moveForce);
 
         if (Mathf.Abs(rb2d.velocity.x) > curMaxSpeed)
             rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * curMaxSpeed, rb2d.velocity.y);
@@ -207,6 +200,9 @@ public class PlayerController : MonoBehaviour, ISavable {
 
     public void SetHoldingBox(bool holdingBox) {
         this.holdingBox = holdingBox;
+
+        if (holdingBox && carefulWalking)
+            carefulWalking = false;
     }
 
     public bool GetOverBarrel() {
