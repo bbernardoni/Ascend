@@ -31,7 +31,6 @@ public class PlayerController : MonoBehaviour, ISavable {
     //ladder
     private bool onLadder;
     public float climbSpeed;
-    private float climbVelocity;
     private float gravityStore;
 
     private Rigidbody2D rb2d;
@@ -108,16 +107,6 @@ public class PlayerController : MonoBehaviour, ISavable {
         }
     }
 
-    void OnTriggerStay2D(Collider2D Other)
-    {
-        if(dying) return;
-        if(Other.CompareTag("Enemy") && Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("STUN!");
-            Other.GetComponent<EnemyController>().SetStunned(true);
-        }
-    }
-
     void OnCollisionEnter2D(Collision2D coll) {
         //Debug.Log("Collided with " + coll.gameObject.ToString());
     }
@@ -149,7 +138,7 @@ public class PlayerController : MonoBehaviour, ISavable {
             Flip();
 
         if(onLadder) {
-            climbVelocity = climbSpeed*Input.GetAxisRaw("Vertical");
+            float climbVelocity = climbSpeed*Input.GetAxisRaw("Vertical");
             rb2d.velocity = new Vector2(rb2d.velocity.x, climbVelocity);
 
             anim.Play("climb");
@@ -213,7 +202,7 @@ public class PlayerController : MonoBehaviour, ISavable {
         jump = false;
         holdingBox = false;
         overBarrel = false;
-        // overInteractables
+        overInteractables = 0;
 
         dying = false;
         instaDeath = false;

@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrapScript : MonoBehaviour
-{
+public class TrapScript : MonoBehaviour, ISavable {
     bool activated;
     public Animator anim;
     public AudioSource trapAudio;
@@ -33,5 +32,21 @@ public class TrapScript : MonoBehaviour
                 trapAudio.Play();
             }
         }
+        else {
+            anim.Play("trap_open");
+        }
+    }
+
+    public void OnSave(ISavableWriteStore store) {
+        store.WriteBool("activated", activated);
+    }
+
+    public void OnLoad(ISavableReadStore store) {
+        activated = store.ReadBool("activated");
+
+        if(!activated)
+            anim.Play("trap_open");
+        else
+            anim.Play("trap_close");
     }
 }
