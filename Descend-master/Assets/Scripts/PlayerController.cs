@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour, ISavable {
     // movement 
     public float moveForce;
     public float maxSpeed;
+    public float carefulWalkSpeedFactor;
     public float jumpForce;
     public Transform groundCheck;
     public Animator anim;
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour, ISavable {
     private bool grounded = false;
     private bool facingRight = true;
     private bool jump = false;
+    private bool carefulWalking = false;
 
     // intactables
     private bool holdingBox = false;
@@ -65,6 +67,15 @@ public class PlayerController : MonoBehaviour, ISavable {
         if (Input.GetButtonDown("Jump") && grounded && !holdingBox)
         {
             jump = true;
+            carefulWalking = false;
+        } else if (Input.GetKey(KeyCode.LeftShift) && grounded && !holdingBox)
+        { // As of now, player cannot hold box and careful walk
+            carefulWalking = true;
+            // Debug.Log("*Pink Panther Theme*");
+        } else if (carefulWalking)
+        {
+            carefulWalking = false;
+            // Debug.Log("*Jazz Music Stops*");
         }
     }
 
@@ -138,7 +149,15 @@ public class PlayerController : MonoBehaviour, ISavable {
             curMaxSpeed /= 2.0f;
 
         if (hMove * rb2d.velocity.x < curMaxSpeed)
-            rb2d.AddForce(Vector2.right * hMove * moveForce);
+        {
+            if (carefulWalking)
+            {
+                rb2d.AddForce(Vector2.right * hMove * moveForce * carefulWalkSpeedFactor);
+            } else
+            {
+                rb2d.AddForce(Vector2.right * hMove * moveForce);
+            }
+        }
 
         if (Mathf.Abs(rb2d.velocity.x) > curMaxSpeed)
             rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * curMaxSpeed, rb2d.velocity.y);
@@ -207,6 +226,11 @@ public class PlayerController : MonoBehaviour, ISavable {
         store.WriteVector3("pos", rb2d.position);
     }
 
+    public bool GetCarefulWalking()
+    {
+        return carefulWalking;
+    }
+
     public void OnLoad(ISavableReadStore store)
     {
         facingRight = true;
@@ -218,6 +242,7 @@ public class PlayerController : MonoBehaviour, ISavable {
         dying = false;
         instaDeath = false;
         onLadder = false;
+        carefulWalking = false;
 
         rb2d.position = store.ReadVector3("pos");
         rb2d.velocity = Vector2.zero;
