@@ -24,6 +24,16 @@ public class LampScript : Interactable, ISavable
         lampLight = gameObject.GetComponentInChildren<Light>();
         maxRange = lampLight.range;
         minRange = Mathf.Abs(lampLight.transform.position.z);
+
+        pickUpLamp();
+    }
+
+    void pickUpLamp() {
+        inUse = true;
+        rb.isKinematic = true;
+
+        transform.parent = player.transform;
+        transform.position = player.transform.position;
     }
 
     public override void function(){
@@ -44,11 +54,7 @@ public class LampScript : Interactable, ISavable
         }
         else {
             // pick up lamp
-            inUse = true;
-            rb.isKinematic = true;
-
-            transform.parent = player.transform;
-            transform.position = player.transform.position;
+            pickUpLamp();
         }
     }
 
@@ -100,11 +106,13 @@ public class LampScript : Interactable, ISavable
 
     public void OnSave(ISavableWriteStore store)
     {
-        store.WriteFloat("range", lampLight.range);
     }
 
     public void OnLoad(ISavableReadStore store)
     {
-        lampLight.range = store.ReadFloat("range");
+        lampLight.range = maxRange;
+
+        // set the player to holding the latern
+        pickUpLamp();
     }
 }
