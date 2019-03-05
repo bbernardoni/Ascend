@@ -17,19 +17,34 @@ public class TrapScript : MonoBehaviour, ISavable {
     {
         if (!activated)
         {
+            bool activateTrap = false;
+
             Debug.Log("trap collision: " + collider.gameObject.name);
             if (collider.gameObject.tag == "Player" || collider.gameObject.tag == "Enemy")
             {
-                activated = true;
                 if(collider.gameObject.tag == "Player") {
                     PlayerController player = collider.gameObject.GetComponent<PlayerController>();
-                    player.Kill();
+
+                    Debug.Log(player.GetCarefulWalking().ToString());
+                    if (!player.GetCarefulWalking())
+                    {
+                        player.Kill();
+                    }
+
+                    activateTrap = !player.GetCarefulWalking();
                 } else if(collider.gameObject.tag == "Enemy"){
                     EnemyController enemy = collider.gameObject.GetComponent<EnemyController>();
                     enemy.Kill();
+                    activateTrap = true;
                 }
-                anim.Play("trap_close");
-                trapAudio.Play();
+
+                if (activateTrap)
+                {
+                    anim.Play("trap_close");
+                    trapAudio.Play();
+                }
+
+                activated = activateTrap;
             }
         }
         else {

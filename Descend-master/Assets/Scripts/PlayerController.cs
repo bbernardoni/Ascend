@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour, ISavable {
     // movement 
     public float moveForce;
     public float maxSpeed;
+    public float carefulWalkSpeedFactor;
     public float jumpForce;
     public Transform groundCheck;
     public Animator anim;
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour, ISavable {
     private bool grounded = false;
     private bool facingRight = true;
     private bool jump = false;
+    private bool carefulWalking = false;
 
     // intactables
     private bool holdingBox = false;
@@ -64,6 +66,13 @@ public class PlayerController : MonoBehaviour, ISavable {
         if (Input.GetButtonDown("Jump") && grounded && !holdingBox)
         {
             jump = true;
+            carefulWalking = false;
+        } else if (Input.GetKey(KeyCode.LeftShift) && grounded && !holdingBox)
+        { // As of now, player cannot hold box and careful walk
+            carefulWalking = true;
+        } else if (carefulWalking)
+        {
+            carefulWalking = false;
         }
     }
 
@@ -126,6 +135,9 @@ public class PlayerController : MonoBehaviour, ISavable {
         if(holdingBox)
             curMaxSpeed /= 2.0f;
 
+        if (carefulWalking)
+            curMaxSpeed *= carefulWalkSpeedFactor;
+
         if (hMove * rb2d.velocity.x < curMaxSpeed)
             rb2d.AddForce(Vector2.right * hMove * moveForce);
 
@@ -177,6 +189,9 @@ public class PlayerController : MonoBehaviour, ISavable {
 
     public void SetHoldingBox(bool holdingBox) {
         this.holdingBox = holdingBox;
+
+        if (holdingBox && carefulWalking)
+            carefulWalking = false;
     }
 
     public bool GetOverBarrel() {
@@ -196,6 +211,11 @@ public class PlayerController : MonoBehaviour, ISavable {
         store.WriteVector3("pos", rb2d.position);
     }
 
+    public bool GetCarefulWalking()
+    {
+        return carefulWalking;
+    }
+
     public void OnLoad(ISavableReadStore store)
     {
         facingRight = true;
@@ -207,6 +227,7 @@ public class PlayerController : MonoBehaviour, ISavable {
         dying = false;
         instaDeath = false;
         onLadder = false;
+        carefulWalking = false;
 
         rb2d.position = store.ReadVector3("pos");
         rb2d.velocity = Vector2.zero;

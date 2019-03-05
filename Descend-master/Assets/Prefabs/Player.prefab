@@ -103,7 +103,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1459277135638354}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.25, y: 5.22, z: 0}
+  m_LocalPosition: {x: 5.76, y: -15.51, z: 0}
   m_LocalScale: {x: 0.64, y: 0.64, z: 1}
   m_Children:
   - {fileID: 4255648215765464}
@@ -320,13 +320,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveForce: 800
   maxSpeed: 10
+  carefulWalkSpeedFactor: 0.25
   jumpForce: 4000
   groundCheck: {fileID: 4255648215765464}
   anim: {fileID: 95880589199466036}
   deathTime: 2
   fader: {fileID: 0}
   sceneSaver: {fileID: 0}
-  onLadder: 0
   climbSpeed: 4
 --- !u!124 &124428507700366262
 Behaviour:
