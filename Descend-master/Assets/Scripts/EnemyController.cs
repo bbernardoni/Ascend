@@ -79,6 +79,8 @@ public class EnemyController : MonoBehaviour {
             //transform.localScale = new Vector3(-1, 1, 1);
         }
     }
+    
+
 
     public void Kill()
     {
